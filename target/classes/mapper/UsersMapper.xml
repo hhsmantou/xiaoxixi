@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.domain.mapper.UsersMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.demo.domain.entity.Users">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="email" property="email" />
+        <result column="address" property="address" />
+        <result column="phone" property="phone" />
+        <result column="avatar" property="avatar" />
+        <result column="role_id" property="roleId" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, username, password, email, address, phone, avatar, role_id, create_time
+    </sql>
+
+    <!-- 更新用户信息 -->
+    <update id="updateUser" parameterType="com.example.demo.domain.entity.Users">
+        UPDATE users
+        <set>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="isMember != null">
+                is_member = #{isMember},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据用户名查询用户 -->
+    <select id="selectByUsername" resultMap="BaseResultMap">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM users 
+        WHERE username = #{username}
+    </select>
+
+    <!-- 检查用户名是否存在 -->
+    <select id="existsByUsername" resultType="boolean">
+        SELECT COUNT(*) FROM users WHERE username = #{username}
+    </select>
+
+    <!-- 插入新用户 -->
+    <insert id="insertUser" parameterType="com.example.demo.domain.entity.Users" 
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO users (
+            username, password, email, address, phone, avatar, role_id,is_member, create_time
+        ) VALUES (
+            #{username}, #{password}, #{email}, #{address}, #{phone}, 
+            #{avatar}, #{roleId}, #{isMember},#{createTime}
+        )
+    </insert>
+
+    <!-- 根据ID删除用户 -->
+    <delete id="deleteById">
+        DELETE FROM users WHERE id = #{id}
+    </delete>
+
+    <!-- 批量删除用户 -->
+    <delete id="deleteBatchIds">
+        DELETE FROM users WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 条件查询用户列表 -->
+    <select id="selectUserList" resultMap="BaseResultMap">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM users
+        <where>
+            <if test="username != null and username != ''">
+                AND username LIKE CONCAT('%', #{username}, '%')
+            </if>
+            <if test="email != null and email != ''">
+                AND email LIKE CONCAT('%', #{email}, '%')
+            </if>
+            <if test="phone != null and phone != ''">
+                AND phone LIKE CONCAT('%', #{phone}, '%')
+            </if>
+            <if test="roleId != null">
+                AND role_id = #{roleId}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <update id="updatePassword">
+        UPDATE users
+        SET password = #{password}
+        WHERE username = #{username}
+    </update>
+    <delete id="batchDeleteUsers" parameterType="java.util.List">
+        DELETE FROM users WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 分页查询用户 -->
+    <!-- 分页查询用户 -->
+    <select id="selectUsersPage" resultType="com.example.demo.domain.entity.Users">
+        SELECT * FROM users
+        WHERE (#{username} IS NULL OR username LIKE CONCAT('%', #{username}, '%'))
+          AND (#{phone} IS NULL OR phone LIKE CONCAT('%', #{phone}, '%'))
+          AND (#{email} IS NULL OR email LIKE CONCAT('%', #{email}, '%'))
+          AND (#{roleId} IS NULL OR role_id = #{roleId})
+    </select>
+</mapper>

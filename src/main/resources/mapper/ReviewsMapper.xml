@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.domain.mapper.ReviewsMapper">
+    <insert id="insertReview" parameterType="com.example.demo.domain.entity.Reviews">
+        INSERT INTO reviews (user_id, product_id, rating, content, create_time)
+        VALUES (#{userId}, #{productId}, #{rating}, #{content}, #{createTime})
+    </insert>
+
+    <select id="selectAllReviews" resultType="com.example.demo.domain.entity.Reviews">
+        SELECT * FROM reviews
+    </select>
+
+    <update id="updateReview" parameterType="com.example.demo.domain.entity.Reviews">
+        UPDATE reviews
+        SET user_id = #{userId}, product_id = #{productId}, rating = #{rating}, content = #{content}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteReviewById" parameterType="Integer">
+        DELETE FROM reviews WHERE id = #{id}
+    </delete>
+
+    <select id="selectReviewsByUserId" resultType="com.example.demo.domain.entity.Reviews">
+        SELECT * FROM reviews WHERE user_id = #{userId}
+    </select>
+
+    <select id="selectReviewsByProductId" resultType="com.example.demo.domain.entity.Reviews">
+        SELECT * FROM reviews WHERE product_id = #{productId}
+    </select>
+</mapper>

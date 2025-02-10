@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.domain.mapper.OrdersMapper">
+    <insert id="insertOrder" parameterType="com.example.demo.domain.entity.Orders" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO orders (user_id, status, total_price, product_id,create_time)
+        VALUES (#{userId}, #{status}, #{totalPrice}, #{productId},#{createTime})
+    </insert>
+
+    <select id="selectAllOrders" resultType="com.example.demo.domain.entity.Orders">
+        SELECT * FROM orders ORDER BY create_time DESC
+    </select>
+
+    <update id="updateOrder" parameterType="com.example.demo.domain.entity.Orders">
+        UPDATE orders
+        SET user_id = #{userId}, status = #{status}, total_price = #{totalPrice}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteOrderById" parameterType="Integer">
+        DELETE FROM orders WHERE id = #{id}
+    </delete>
+
+    <select id="getOrdersByUserId" resultType="com.example.demo.domain.entity.Orders">
+        SELECT * FROM orders WHERE user_id = #{userId} ORDER BY create_time DESC
+    </select>
+</mapper>

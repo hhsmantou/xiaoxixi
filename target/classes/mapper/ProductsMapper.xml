@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.domain.mapper.ProductsMapper">
+
+    <select id="selectAllProducts" resultType="com.example.demo.domain.entity.Products">
+        SELECT * FROM products
+    </select>
+
+    <select id="selectProductById" parameterType="int" resultType="com.example.demo.domain.entity.Products">
+        SELECT * FROM products WHERE id = #{id}
+    </select>
+
+    <insert id="insertProduct" parameterType="com.example.demo.domain.entity.Products">
+        INSERT INTO products (name, model, info, price, category, cover, inventory, create_time, update_time)
+        VALUES (#{name}, #{model}, #{info}, #{price}, #{category}, #{cover}, #{inventory}, #{createTime}, #{updateTime})
+    </insert>
+
+    <update id="updateProduct" parameterType="com.example.demo.domain.entity.Products">
+        UPDATE products
+        SET name = #{name}, model = #{model}, info = #{info}, price = #{price}, category = #{category},
+            cover = #{cover}, inventory = #{inventory}, update_time = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteProductById" parameterType="int">
+        DELETE FROM products WHERE id = #{id}
+    </delete>
+
+    <select id="searchProductsByName" parameterType="string" resultType="com.example.demo.domain.entity.Products">
+        SELECT * FROM products WHERE name LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+    <!-- 更新商品的图片信息 -->
+    <update id="updateProductImages">
+        UPDATE products
+        SET cover = #{cover}
+        WHERE id = #{productId}
+    </update>
+    <!-- 分页查询商品 -->
+    <select id="selectProductsPage" resultType="com.example.demo.domain.entity.Products">
+        SELECT * FROM products
+        WHERE name LIKE CONCAT('%', #{name}, '%')
+    </select>
+
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.domain.mapper.CategoriesMapper">
+
+    <!-- Insert a new category -->
+    <insert id="insertCategory" parameterType="com.example.demo.domain.entity.Categories">
+        INSERT INTO categories (name, sort)
+        VALUES (#{name}, #{sort})
+    </insert>
+
+    <!-- Select all categories -->
+    <select id="selectAllCategories" resultType="com.example.demo.domain.entity.Categories">
+        SELECT * FROM categories ORDER BY sort
+    </select>
+
+    <!-- Update a category -->
+    <update id="updateCategory" parameterType="com.example.demo.domain.entity.Categories">
+        UPDATE categories
+        SET name = #{name}, sort = #{sort}
+        WHERE id = #{id}
+    </update>
+
+    <!-- Delete a category by ID -->
+    <delete id="deleteCategoryById" parameterType="int">
+        DELETE FROM categories WHERE id = #{id}
+    </delete>
+</mapper>
