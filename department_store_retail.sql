@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost_3306
+ Source Server         : localhost2
  Source Server Type    : MySQL
- Source Server Version : 50726 (5.7.26)
+ Source Server Version : 80039 (8.0.39)
  Source Host           : localhost:3306
  Source Schema         : department_store_retail
 
  Target Server Type    : MySQL
- Target Server Version : 50726 (5.7.26)
+ Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 10/02/2025 17:38:56
+ Date: 13/02/2025 17:57:22
 */
 
 SET NAMES utf8mb4;
@@ -22,17 +22,17 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `cart`;
 CREATE TABLE `cart`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '购物车id',
-  `user_id` int(11) NOT NULL COMMENT '用户id',
-  `product_id` int(11) NOT NULL COMMENT '商品ID',
-  `quantity` int(11) NOT NULL DEFAULT 1 COMMENT '数量',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '购物车id',
+  `user_id` int NOT NULL COMMENT '用户id',
+  `product_id` int NOT NULL COMMENT '商品ID',
+  `quantity` int NOT NULL DEFAULT 1 COMMENT '数量',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `user_id`(`user_id`) USING BTREE,
-  INDEX `product_id`(`product_id`) USING BTREE,
+  INDEX `user_id`(`user_id` ASC) USING BTREE,
+  INDEX `product_id`(`product_id` ASC) USING BTREE,
   CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cart
@@ -52,17 +52,17 @@ INSERT INTO `cart` VALUES (14, 14, 100, 2, '2025-02-09 16:49:21');
 -- ----------------------------
 DROP TABLE IF EXISTS `categories`;
 CREATE TABLE `categories`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '商品分类ID',
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '商品分类名',
-  `sort` int(11) NULL DEFAULT 0 COMMENT '排序字段',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '商品分类ID',
+  `name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '商品分类名',
+  `sort` int NULL DEFAULT 0 COMMENT '排序字段',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of categories
 -- ----------------------------
 INSERT INTO `categories` VALUES (1, '饮料', 2);
-INSERT INTO `categories` VALUES (3, '文具', 2);
+INSERT INTO `categories` VALUES (3, '文具', 3);
 INSERT INTO `categories` VALUES (4, '食品', 2);
 INSERT INTO `categories` VALUES (5, '生活', 2);
 INSERT INTO `categories` VALUES (6, '电子', 2);
@@ -75,34 +75,49 @@ INSERT INTO `categories` VALUES (24, '未命名', 1000);
 -- ----------------------------
 DROP TABLE IF EXISTS `limited_products`;
 CREATE TABLE `limited_products`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '限购商品ID',
-  `product_id` int(11) NOT NULL COMMENT '商品ID，关联 products 表',
-  `limit_quantity` int(11) NOT NULL COMMENT '每个用户的限购数量',
-  `limit_timeframe` enum('daily','weekly','monthly','once') CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT 'once' COMMENT '限购周期',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '限购商品ID',
+  `product_id` int NOT NULL COMMENT '商品ID，关联 products 表',
+  `limit_quantity` int NOT NULL COMMENT '每个用户的限购数量',
+  `limit_timeframe` enum('daily','weekly','monthly','once') CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT 'once' COMMENT '限购周期',
   `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '商品限购规则创建日期',
   `end_date` datetime NOT NULL COMMENT '限购结束日期',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `unique_product`(`product_id`) USING BTREE,
+  UNIQUE INDEX `unique_product`(`product_id` ASC) USING BTREE,
   CONSTRAINT `fk_limited_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of limited_products
 -- ----------------------------
-INSERT INTO `limited_products` VALUES (2, 123, 10, 'monthly', '2025-02-10 16:41:53', '2025-03-10 16:41:53');
+INSERT INTO `limited_products` VALUES (5, 114, 5, 'monthly', '2025-02-12 12:54:09', '2025-03-12 12:54:09');
+INSERT INTO `limited_products` VALUES (7, 116, 4, 'monthly', '2025-02-12 13:02:43', '2025-03-12 13:02:43');
+INSERT INTO `limited_products` VALUES (8, 52, 5, 'daily', '2025-02-12 17:59:22', '2025-02-13 17:59:22');
+INSERT INTO `limited_products` VALUES (9, 144, 4, 'daily', '2025-02-12 18:00:07', '2025-02-13 18:00:07');
+INSERT INTO `limited_products` VALUES (10, 142, 3, 'daily', '2025-02-12 18:00:18', '2025-02-13 18:00:18');
+INSERT INTO `limited_products` VALUES (11, 152, 8, 'daily', '2025-02-12 18:00:28', '2025-02-13 18:00:28');
+INSERT INTO `limited_products` VALUES (12, 132, 11, 'daily', '2025-02-12 18:00:38', '2025-02-13 18:00:38');
+INSERT INTO `limited_products` VALUES (13, 135, 15, 'daily', '2025-02-12 18:00:48', '2025-02-13 18:00:48');
+INSERT INTO `limited_products` VALUES (14, 97, 4, 'daily', '2025-02-12 18:00:56', '2025-02-13 18:00:56');
+INSERT INTO `limited_products` VALUES (15, 93, 3, 'daily', '2025-02-12 18:01:09', '2025-02-13 18:01:09');
+INSERT INTO `limited_products` VALUES (16, 5, 1, 'daily', '2025-02-12 18:17:27', '2025-02-13 18:17:27');
+INSERT INTO `limited_products` VALUES (17, 313, 6, 'daily', '2025-02-13 17:52:25', '2025-02-14 17:52:25');
+INSERT INTO `limited_products` VALUES (18, 345, 2, 'daily', '2025-02-13 17:53:26', '2025-02-14 17:53:26');
+INSERT INTO `limited_products` VALUES (19, 312, 1, 'daily', '2025-02-13 17:54:07', '2025-02-14 17:54:07');
+INSERT INTO `limited_products` VALUES (20, 322, 1, 'daily', '2025-02-13 17:54:39', '2025-02-14 17:54:39');
+INSERT INTO `limited_products` VALUES (21, 319, 1, 'daily', '2025-02-13 17:55:08', '2025-02-14 17:55:08');
 
 -- ----------------------------
 -- Table structure for limited_purchases
 -- ----------------------------
 DROP TABLE IF EXISTS `limited_purchases`;
 CREATE TABLE `limited_purchases`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '购买记录ID',
-  `user_id` int(11) NOT NULL COMMENT '用户ID，关联 users 表',
-  `product_id` int(11) NOT NULL COMMENT '商品ID，关联 products 表',
-  `purchased_quantity` int(11) NOT NULL DEFAULT 0 COMMENT '用户已购买数量',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '购买记录ID',
+  `user_id` int NOT NULL COMMENT '用户ID，关联 users 表',
+  `product_id` int NOT NULL COMMENT '商品ID，关联 products 表',
+  `purchased_quantity` int NOT NULL DEFAULT 0 COMMENT '用户已购买数量',
   `purchase_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '购买时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of limited_purchases
@@ -111,267 +126,109 @@ INSERT INTO `limited_purchases` VALUES (1, 14, 123, 2, '2025-02-10 15:04:01');
 INSERT INTO `limited_purchases` VALUES (2, 14, 123, 2, '2025-02-10 08:22:16');
 INSERT INTO `limited_purchases` VALUES (3, 15, 123, 4, '2025-02-10 08:22:33');
 INSERT INTO `limited_purchases` VALUES (4, 16, 123, 4, '2025-02-10 08:42:00');
+INSERT INTO `limited_purchases` VALUES (5, 14, 123, 4, '2025-02-12 04:50:50');
+INSERT INTO `limited_purchases` VALUES (6, 14, 103, 4, '2025-02-12 04:58:38');
 
 -- ----------------------------
 -- Table structure for order_details
 -- ----------------------------
 DROP TABLE IF EXISTS `order_details`;
 CREATE TABLE `order_details`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '订单详情ID',
-  `order_id` int(11) NOT NULL COMMENT '订单ID',
-  `product_id` int(11) NOT NULL COMMENT '商品ID',
-  `quantity` int(11) NOT NULL COMMENT '商品数量',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '订单详情ID',
+  `order_id` int NOT NULL COMMENT '订单ID',
+  `product_id` int NOT NULL COMMENT '商品ID',
+  `quantity` int NOT NULL COMMENT '商品数量',
   `price` decimal(10, 2) NOT NULL COMMENT '商品单价',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `order_id`(`order_id`) USING BTREE,
-  INDEX `product_id`(`product_id`) USING BTREE,
+  INDEX `order_id`(`order_id` ASC) USING BTREE,
+  INDEX `product_id`(`product_id` ASC) USING BTREE,
   CONSTRAINT `order_details_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `order_details_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 174 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 194 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of order_details
 -- ----------------------------
-INSERT INTO `order_details` VALUES (1, 5, 101, 2, 99.99, '2025-02-08 19:23:59');
-INSERT INTO `order_details` VALUES (2, 6, 101, 2, 99.99, '2025-02-08 19:26:06');
-INSERT INTO `order_details` VALUES (3, 7, 101, 2, 99.99, '2025-02-08 19:26:49');
-INSERT INTO `order_details` VALUES (5, 9, 101, 2, 99.99, '2025-02-08 19:29:06');
-INSERT INTO `order_details` VALUES (13, 16, 100, 2, 99.99, '2025-02-09 16:57:52');
-INSERT INTO `order_details` VALUES (14, 17, 100, 2, 99.99, '2025-02-09 16:57:57');
-INSERT INTO `order_details` VALUES (15, 18, 100, 2, 99.99, '2025-02-09 16:57:58');
-INSERT INTO `order_details` VALUES (16, 19, 100, 2, 99.99, '2025-02-09 16:57:59');
-INSERT INTO `order_details` VALUES (17, 20, 100, 2, 99.99, '2025-02-09 16:58:00');
-INSERT INTO `order_details` VALUES (18, 21, 100, 2, 99.99, '2025-02-09 16:58:01');
-INSERT INTO `order_details` VALUES (19, 22, 100, 2, 99.99, '2025-02-09 16:58:02');
-INSERT INTO `order_details` VALUES (20, 23, 100, 2, 99.99, '2025-02-09 16:58:03');
-INSERT INTO `order_details` VALUES (21, 24, 100, 2, 99.99, '2025-02-09 16:58:04');
-INSERT INTO `order_details` VALUES (22, 25, 100, 2, 99.99, '2025-02-09 16:58:05');
-INSERT INTO `order_details` VALUES (23, 26, 100, 2, 99.99, '2025-02-09 16:58:07');
-INSERT INTO `order_details` VALUES (24, 27, 100, 2, 99.99, '2025-02-09 16:58:08');
-INSERT INTO `order_details` VALUES (25, 28, 100, 2, 99.99, '2025-02-09 16:58:09');
-INSERT INTO `order_details` VALUES (26, 29, 100, 2, 99.99, '2025-02-09 16:58:10');
-INSERT INTO `order_details` VALUES (27, 30, 100, 2, 99.99, '2025-02-09 16:58:11');
-INSERT INTO `order_details` VALUES (28, 31, 100, 2, 99.99, '2025-02-09 16:58:13');
-INSERT INTO `order_details` VALUES (29, 32, 100, 2, 99.99, '2025-02-09 16:58:14');
-INSERT INTO `order_details` VALUES (30, 33, 100, 2, 99.99, '2025-02-09 17:35:08');
-INSERT INTO `order_details` VALUES (31, 33, 100, 2, 99.99, '2025-02-09 17:35:08');
-INSERT INTO `order_details` VALUES (32, 33, 100, 2, 99.99, '2025-02-09 17:35:08');
-INSERT INTO `order_details` VALUES (33, 33, 100, 2, 99.99, '2025-02-09 17:35:08');
-INSERT INTO `order_details` VALUES (34, 34, 100, 2, 99.99, '2025-02-09 17:35:13');
-INSERT INTO `order_details` VALUES (35, 34, 100, 2, 99.99, '2025-02-09 17:35:13');
-INSERT INTO `order_details` VALUES (36, 34, 100, 2, 99.99, '2025-02-09 17:35:13');
-INSERT INTO `order_details` VALUES (37, 34, 100, 2, 99.99, '2025-02-09 17:35:13');
-INSERT INTO `order_details` VALUES (38, 35, 100, 2, 99.99, '2025-02-09 17:35:15');
-INSERT INTO `order_details` VALUES (39, 35, 100, 2, 99.99, '2025-02-09 17:35:15');
-INSERT INTO `order_details` VALUES (40, 35, 100, 2, 99.99, '2025-02-09 17:35:15');
-INSERT INTO `order_details` VALUES (41, 35, 100, 2, 99.99, '2025-02-09 17:35:15');
-INSERT INTO `order_details` VALUES (42, 36, 100, 2, 99.99, '2025-02-09 17:35:16');
-INSERT INTO `order_details` VALUES (43, 36, 100, 2, 99.99, '2025-02-09 17:35:16');
-INSERT INTO `order_details` VALUES (44, 36, 100, 2, 99.99, '2025-02-09 17:35:16');
-INSERT INTO `order_details` VALUES (45, 36, 100, 2, 99.99, '2025-02-09 17:35:16');
-INSERT INTO `order_details` VALUES (46, 37, 100, 2, 99.99, '2025-02-09 17:35:17');
-INSERT INTO `order_details` VALUES (47, 37, 100, 2, 99.99, '2025-02-09 17:35:17');
-INSERT INTO `order_details` VALUES (48, 37, 100, 2, 99.99, '2025-02-09 17:35:17');
-INSERT INTO `order_details` VALUES (49, 37, 100, 2, 99.99, '2025-02-09 17:35:17');
-INSERT INTO `order_details` VALUES (50, 38, 100, 2, 99.99, '2025-02-09 17:35:26');
-INSERT INTO `order_details` VALUES (51, 38, 100, 2, 99.99, '2025-02-09 17:35:26');
-INSERT INTO `order_details` VALUES (52, 38, 100, 2, 99.99, '2025-02-09 17:35:26');
-INSERT INTO `order_details` VALUES (53, 38, 100, 2, 99.99, '2025-02-09 17:35:26');
-INSERT INTO `order_details` VALUES (54, 38, 100, 2, 99.99, '2025-02-09 17:35:26');
-INSERT INTO `order_details` VALUES (55, 38, 100, 2, 99.99, '2025-02-09 17:35:26');
-INSERT INTO `order_details` VALUES (56, 38, 100, 2, 99.99, '2025-02-09 17:35:26');
-INSERT INTO `order_details` VALUES (57, 38, 100, 2, 99.99, '2025-02-09 17:35:26');
-INSERT INTO `order_details` VALUES (58, 38, 100, 2, 99.99, '2025-02-09 17:35:26');
-INSERT INTO `order_details` VALUES (59, 38, 100, 2, 99.99, '2025-02-09 17:35:26');
-INSERT INTO `order_details` VALUES (60, 38, 100, 2, 99.99, '2025-02-09 17:35:26');
-INSERT INTO `order_details` VALUES (61, 38, 100, 2, 99.99, '2025-02-09 17:35:26');
-INSERT INTO `order_details` VALUES (63, 39, 100, 2, 100.00, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (64, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (65, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (66, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (67, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (68, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (69, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (70, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (71, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (72, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (73, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (74, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (75, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (76, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (77, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (78, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (79, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (80, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (81, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (82, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (83, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (84, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (85, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (86, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (87, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (88, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (89, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (90, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (91, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (92, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (93, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (94, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (95, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (96, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (97, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (98, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (99, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (100, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (101, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (102, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (103, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (104, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (105, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (106, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (107, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (108, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (109, 39, 100, 2, 99.99, '2025-02-09 17:35:41');
-INSERT INTO `order_details` VALUES (110, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (111, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (112, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (113, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (114, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (115, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (116, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (117, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (118, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (119, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (120, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (121, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (122, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (123, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (124, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (125, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (126, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (127, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (128, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (129, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (130, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (131, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (132, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (133, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (134, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (135, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (136, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (137, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (138, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (139, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (140, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (141, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (142, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (143, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (144, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (145, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (146, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (147, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (148, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (149, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (150, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (151, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (152, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (153, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (154, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (155, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (156, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (157, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (158, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (159, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (160, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (161, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (162, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (163, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (164, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (165, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (166, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (167, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (168, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (169, 40, 100, 2, 99.99, '2025-02-09 17:35:45');
-INSERT INTO `order_details` VALUES (170, 41, 100, 2, 99.99, '2025-02-09 17:35:52');
-INSERT INTO `order_details` VALUES (171, 39, 103, 2, 1000.00, '2025-02-09 17:41:35');
-INSERT INTO `order_details` VALUES (172, 42, 100, 2, 99.99, '2025-02-10 12:55:46');
-INSERT INTO `order_details` VALUES (173, 43, 100, 2, 99.99, '2025-02-10 12:59:32');
+INSERT INTO `order_details` VALUES (186, 47, 5, 2, 2.00, '2025-02-11 15:09:24');
+INSERT INTO `order_details` VALUES (187, 47, 6, 2, 2.00, '2025-02-11 15:09:24');
+INSERT INTO `order_details` VALUES (188, 47, 7, 2, 2.00, '2025-02-11 15:09:24');
+INSERT INTO `order_details` VALUES (189, 47, 8, 2, 2.00, '2025-02-11 15:09:24');
 
 -- ----------------------------
 -- Table structure for orders
 -- ----------------------------
 DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '订单ID',
-  `user_id` int(11) NOT NULL COMMENT '用户ID',
-  `status` int(11) NULL DEFAULT 0 COMMENT '订单状态 0待付款、1已付款、2已发货、3已送达、4已取件、5已取消、6已退款',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '订单ID',
+  `user_id` int NOT NULL COMMENT '用户ID',
+  `status` int NULL DEFAULT 0 COMMENT '订单状态 0待付款、1已付款、2已发货、3已送达、4已取件、5已取消、6已退款',
   `total_price` decimal(10, 2) NOT NULL COMMENT '订单金额',
-  `product_id` int(11) NULL DEFAULT NULL COMMENT '商品ID',
+  `product_id` int NULL DEFAULT NULL COMMENT '商品ID',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '下单时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `user_id`(`user_id`) USING BTREE,
+  INDEX `user_id`(`user_id` ASC) USING BTREE,
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 44 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 79 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of orders
 -- ----------------------------
-INSERT INTO `orders` VALUES (5, 8, 1, 199.99, NULL, '2025-02-08 12:00:00');
-INSERT INTO `orders` VALUES (6, 8, 1, 199.99, NULL, '2025-02-08 19:26:06');
-INSERT INTO `orders` VALUES (7, 8, 1, 199.99, 101, '2025-02-08 19:26:49');
 INSERT INTO `orders` VALUES (9, 8, 1, 199.99, 101, '2025-02-08 19:29:06');
-INSERT INTO `orders` VALUES (16, 14, 1, 199.98, 800, '2025-02-09 16:57:52');
-INSERT INTO `orders` VALUES (17, 14, 1, 199.98, 800, '2025-02-09 16:57:57');
-INSERT INTO `orders` VALUES (18, 14, 1, 199.98, 800, '2025-02-09 16:57:59');
-INSERT INTO `orders` VALUES (19, 14, 1, 199.98, 800, '2025-02-09 16:58:00');
-INSERT INTO `orders` VALUES (20, 14, 1, 199.98, 800, '2025-02-09 16:58:01');
-INSERT INTO `orders` VALUES (21, 14, 1, 199.98, 800, '2025-02-09 16:58:02');
-INSERT INTO `orders` VALUES (22, 14, 1, 199.98, 800, '2025-02-09 16:58:03');
-INSERT INTO `orders` VALUES (23, 14, 1, 199.98, 800, '2025-02-09 16:58:04');
-INSERT INTO `orders` VALUES (24, 14, 1, 199.98, 800, '2025-02-09 16:58:05');
-INSERT INTO `orders` VALUES (25, 14, 1, 199.98, 800, '2025-02-09 16:58:06');
-INSERT INTO `orders` VALUES (26, 14, 1, 199.98, 800, '2025-02-09 16:58:07');
-INSERT INTO `orders` VALUES (27, 14, 1, 199.98, 800, '2025-02-09 16:58:09');
-INSERT INTO `orders` VALUES (28, 14, 1, 199.98, 800, '2025-02-09 16:58:10');
-INSERT INTO `orders` VALUES (29, 14, 1, 199.98, 800, '2025-02-09 16:58:11');
-INSERT INTO `orders` VALUES (30, 14, 1, 199.98, 800, '2025-02-09 16:58:12');
-INSERT INTO `orders` VALUES (31, 14, 1, 199.98, 800, '2025-02-09 16:58:14');
-INSERT INTO `orders` VALUES (32, 14, 1, 199.98, 800, '2025-02-09 16:58:15');
-INSERT INTO `orders` VALUES (33, 14, 1, 799.92, 800, '2025-02-09 17:35:08');
-INSERT INTO `orders` VALUES (34, 14, 1, 799.92, 800, '2025-02-09 17:35:14');
-INSERT INTO `orders` VALUES (35, 14, 1, 799.92, 800, '2025-02-09 17:35:15');
-INSERT INTO `orders` VALUES (36, 14, 1, 799.92, 800, '2025-02-09 17:35:16');
-INSERT INTO `orders` VALUES (37, 14, 1, 799.92, 800, '2025-02-09 17:35:18');
-INSERT INTO `orders` VALUES (38, 14, 1, 2399.76, 800, '2025-02-09 17:35:26');
-INSERT INTO `orders` VALUES (39, 14, 1, 9599.04, 800, '2025-02-09 17:35:41');
-INSERT INTO `orders` VALUES (40, 14, 1, 11998.80, 800, '2025-02-09 17:35:46');
-INSERT INTO `orders` VALUES (41, 14, 1, 199.98, 800, '2025-02-09 17:35:52');
-INSERT INTO `orders` VALUES (42, 14, 1, 199.98, 101, '2025-02-10 12:55:46');
-INSERT INTO `orders` VALUES (43, 14, 1, 179.98, 101, '2025-02-10 12:59:33');
+INSERT INTO `orders` VALUES (47, 14, 0, 14.40, 6, '2025-02-11 15:09:25');
+INSERT INTO `orders` VALUES (49, 105, 0, 8.87, 40, '2025-02-11 21:00:54');
+INSERT INTO `orders` VALUES (50, 17, 4, 8.29, 236, '2025-02-11 01:26:25');
+INSERT INTO `orders` VALUES (51, 38, 3, 2.74, 294, '2025-02-10 22:26:28');
+INSERT INTO `orders` VALUES (52, 23, 5, 9.62, 275, '2025-02-10 06:24:04');
+INSERT INTO `orders` VALUES (53, 86, 3, 19.46, 278, '2025-02-11 11:20:17');
+INSERT INTO `orders` VALUES (54, 74, 3, 11.05, 107, '2025-02-10 21:26:19');
+INSERT INTO `orders` VALUES (55, 48, 4, 8.69, 127, '2025-02-10 17:00:23');
+INSERT INTO `orders` VALUES (56, 97, 6, 1.71, 195, '2025-02-10 02:09:11');
+INSERT INTO `orders` VALUES (57, 35, 5, 2.80, 84, '2025-02-10 15:55:38');
+INSERT INTO `orders` VALUES (58, 84, 5, 7.41, 192, '2025-02-11 12:44:01');
+INSERT INTO `orders` VALUES (59, 105, 0, 8.87, 40, '2025-02-11 21:00:54');
+INSERT INTO `orders` VALUES (60, 17, 4, 8.29, 236, '2025-02-11 01:26:25');
+INSERT INTO `orders` VALUES (61, 38, 3, 2.74, 294, '2025-02-10 22:26:28');
+INSERT INTO `orders` VALUES (62, 23, 5, 9.62, 275, '2025-02-10 06:24:04');
+INSERT INTO `orders` VALUES (63, 86, 3, 19.46, 278, '2025-02-11 11:20:17');
+INSERT INTO `orders` VALUES (64, 74, 3, 11.05, 107, '2025-02-10 21:26:19');
+INSERT INTO `orders` VALUES (65, 48, 4, 8.69, 127, '2025-02-10 17:00:23');
+INSERT INTO `orders` VALUES (66, 97, 6, 1.71, 195, '2025-02-10 02:09:11');
+INSERT INTO `orders` VALUES (67, 35, 5, 2.80, 84, '2025-02-10 15:55:38');
+INSERT INTO `orders` VALUES (68, 84, 5, 7.41, 192, '2025-02-11 12:44:01');
+INSERT INTO `orders` VALUES (69, 14, 5, 1.31, 181, '2025-02-11 12:26:17');
+INSERT INTO `orders` VALUES (70, 54, 5, 8.32, 139, '2025-02-10 19:28:28');
+INSERT INTO `orders` VALUES (71, 30, 3, 13.76, 132, '2025-02-10 16:44:46');
+INSERT INTO `orders` VALUES (72, 52, 1, 18.86, 239, '2025-02-11 04:38:25');
+INSERT INTO `orders` VALUES (73, 96, 3, 8.48, 216, '2025-02-11 12:34:53');
+INSERT INTO `orders` VALUES (74, 97, 5, 6.72, 212, '2025-02-10 14:12:45');
+INSERT INTO `orders` VALUES (75, 31, 1, 2.83, 112, '2025-02-10 18:42:36');
+INSERT INTO `orders` VALUES (76, 49, 3, 7.35, 135, '2025-02-11 11:06:30');
+INSERT INTO `orders` VALUES (77, 36, 5, 4.40, 288, '2025-02-10 11:44:43');
+INSERT INTO `orders` VALUES (78, 94, 1, 11.03, 244, '2025-02-11 15:48:18');
 
 -- ----------------------------
 -- Table structure for products
 -- ----------------------------
 DROP TABLE IF EXISTS `products`;
 CREATE TABLE `products`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '商品ID',
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '商品名',
-  `model` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '商品型号',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '商品ID',
+  `name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '商品名',
+  `model` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '商品型号',
   `info` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '商品信息',
   `price` decimal(10, 2) NOT NULL COMMENT '商品价钱',
-  `category` int(11) NOT NULL COMMENT '分类ID',
-  `cover` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '商品图片',
-  `inventory` int(11) NULL DEFAULT 0 COMMENT '库存量',
+  `category` int NOT NULL COMMENT '分类ID',
+  `cover` text CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL COMMENT '商品图片',
+  `inventory` int NULL DEFAULT 0 COMMENT '库存量',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '商品创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '商品修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 310 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 356 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of products
 -- ----------------------------
-INSERT INTO `products` VALUES (5, '柠檬水', '', '这是一款真正的好柠檬水，用柠檬制成的柠檬就像穆尔西亚的果园一样真实。正宗的柠檬味蘸酱！ 它含有恰到好处的水、糖和柠檬的组合，具有完美的甜味和清爽的味道。此外，此食谱中的柠檬来自穆尔西亚，我们是那里为我们的饮料获取最佳原材料的专家。', 2.00, 101, '1738921879999_VN-limonada-750ml.webp', 3000, '2025-02-07 17:51:20', '2025-02-07 17:51:20');
+INSERT INTO `products` VALUES (5, '柠檬水', '', '这是一款真正的好柠檬水，用柠檬制成的柠檬就像穆尔西亚的果园一样真实。正宗的柠檬味蘸酱！ 它含有恰到好处的水、糖和柠檬的组合，具有完美的甜味和清爽的味道。此外，此食谱中的柠檬来自穆尔西亚，我们是那里为我们的饮料获取最佳原材料的专家。', 4.00, 101, '1738921879999_VN-limonada-750ml.webp', 2990, '2025-02-07 17:51:20', '2025-02-07 17:51:20');
 INSERT INTO `products` VALUES (6, '热带羽衣甘蓝', '好喝型', '水果、羽衣甘蓝和朝鲜蓟的营养健康组合，有助于促进消化，具有非常自然的味道。羽衣甘蓝的多种特性和好处使这种蔬菜越来越受到追捧。', 2.00, 101, '1738921993985_VN_mockup_Kale_750ml_2025.webp', 3000, '2025-02-07 17:53:13', '2025-02-08 19:12:38');
 INSERT INTO `products` VALUES (7, '燕麦片-香蕉-椰子在旅途中', '', '对于燕麦片爱好者来说非常方便的形式，因为他们可以随时食用。具有非常特殊风味的食谱，消费者总是重复。', 2.00, 101, '1738922035405_VN_mockup_Avena-Coco_250ml_2025.webp', 3000, '2025-02-07 17:53:55', '2025-02-07 17:53:55');
 INSERT INTO `products` VALUES (8, '燕麦片-草莓-香蕉饮料', '', '我们最新的伟大创新！草莓、香蕉和燕麦片在冰镇饮料中：奶油味和正宗风味的独特结合。市场上任何时间的特殊和不同的食谱。100% 天然燕麦和水果！', 2.00, 101, '1738922053172_VN_mockup_Avena_fresa_750ml_2025.webp', 3000, '2025-02-07 17:54:13', '2025-02-07 17:54:13');
@@ -469,15 +326,15 @@ INSERT INTO `products` VALUES (99, 'ENZO DULCE DE LECHE & GIANDUIA', '', '牛奶
 INSERT INTO `products` VALUES (100, 'TONIO 饼干和奶油', '', '意大利为 Lucciano 制作的生奶油冰棒和饼干，巧克力甘纳许漩涡，涂有白巧克力。所有装饰细节均手工制作。', 2.00, 104, '1738924773024_download.png', 3000, '2025-02-07 18:39:33', '2025-02-07 18:39:33');
 INSERT INTO `products` VALUES (101, '小黄人', '', '涂有比利时原产的意大利白巧克力，带有经典的蓝色和黄色。采用手工制作的眼睛，增添完美的触感喔', 2.00, 104, '1738924796446_download.png', 3000, '2025-02-07 18:39:56', '2025-02-07 18:39:56');
 INSERT INTO `products` VALUES (102, '双重黑巧克力', '', '巧克力冰淇淋，比利时白巧克力和牛奶巧克力双层涂层，金色粉末密封，比利时白巧克力和牛奶巧克力双层涂层，金色粉末密封。', 2.00, 104, '1738924811402_download.png', 3000, '2025-02-07 18:40:11', '2025-02-07 18:40:11');
-INSERT INTO `products` VALUES (103, '白双巧克力', '', '白巧克力配牛奶巧克力漩涡，双层涂有比利时白巧克力和牛奶巧克力。', 2.00, 104, '1738924826439_download.png', 3000, '2025-02-07 18:40:26', '2025-02-07 18:40:26');
+INSERT INTO `products` VALUES (103, '白双巧克力', '', '白巧克力配牛奶巧克力漩涡，双层涂有比利时白巧克力和牛奶巧克力。', 2.00, 104, '1738924826439_download.png', 2996, '2025-02-07 18:40:26', '2025-02-07 18:40:26');
 INSERT INTO `products` VALUES (104, 'Icepop 0% 添加糖', '', '牛奶巧克力冰淇淋，上面覆盖着牛奶巧克力，不加糖。', 2.00, 104, '1738924836176_download.png', 3000, '2025-02-07 18:40:36', '2025-02-07 18:40:36');
 INSERT INTO `products` VALUES (105, '焦糖金', '', '焦糖冰棒涂有金色巧克力。', 2.00, 104, '1738924846531_download.png', 3000, '2025-02-07 18:40:46', '2025-02-07 18:40:46');
 INSERT INTO `products` VALUES (106, 'Sorbet 至尊 80%', '', '纯素 80% 巧克力冰糕涂有相同的巧克力。', 2.00, 104, '1738924857234_download.png', 3000, '2025-02-07 18:40:57', '2025-02-07 18:40:57');
 INSERT INTO `products` VALUES (107, '芒果', '', '新鲜芒果冰淇淋。', 2.00, 104, '1738924878809_file-1610718793008.png', 3000, '2025-02-07 18:41:18', '2025-02-07 18:41:18');
 INSERT INTO `products` VALUES (108, '西番莲果', '', '新鲜的百香果冰淇淋。', 2.00, 104, '1738924891129_file-1610721043266.png', 3000, '2025-02-07 18:41:31', '2025-02-07 18:41:31');
 INSERT INTO `products` VALUES (109, '石灰', '', '用新鲜的酸橙汁制成的冰淇淋。', 2.00, 104, '1738924900031_file-1610718218332.png', 3000, '2025-02-07 18:41:40', '2025-02-07 18:41:40');
-INSERT INTO `products` VALUES (110, '可可岩', '', '马来西亚椰子冰淇淋配白巧克力、酥脆威化饼和椰丝漩涡。', 2.00, 104, '1738924908436_file-1605796153632.png', 3000, '2025-02-07 18:41:48', '2025-02-07 18:41:48');
-INSERT INTO `products` VALUES (111, '百香果芝士蛋糕', '', '芝士蛋糕冰淇淋配百香果大理石花纹。', 2.00, 104, '1738924917758_file-1610718319660.png', 3000, '2025-02-07 18:41:57', '2025-02-07 18:41:57');
+INSERT INTO `products` VALUES (110, '可可岩', '', '马来西亚椰子冰淇淋配白巧克力、酥脆威化饼和椰丝漩涡。', 2.00, 104, '1738924908436_file-1605796153632.png', 2990, '2025-02-07 18:41:48', '2025-02-07 18:41:48');
+INSERT INTO `products` VALUES (111, '百香果芝士蛋糕', '', '芝士蛋糕冰淇淋配百香果大理石花纹。', 2.00, 104, '1738924917758_file-1610718319660.png', 2980, '2025-02-07 18:41:57', '2025-02-07 18:41:57');
 INSERT INTO `products` VALUES (112, '柠檬派', '', '我们将著名的食谱变成了令人难以置信的冰淇淋，以纪念它。', 2.00, 104, '1738924926705_file-1605796132277.png', 3000, '2025-02-07 18:42:06', '2025-02-07 18:42:06');
 INSERT INTO `products` VALUES (113, '马斯卡彭 & 浆果', '', '独家配方，意大利为 Lucciano\'s 制造，马斯卡彭奶酪与阿根廷巴塔哥尼亚的浆果漩涡相结合。', 2.00, 104, '1738924943512_file-1605796102869.png', 3000, '2025-02-07 18:42:23', '2025-02-07 18:42:23');
 INSERT INTO `products` VALUES (114, '樱桃香草', '', 'Vainilla 樱桃大理石花纹奶油冰淇淋。', 2.00, 104, '1738924958105_file-1610721193651.png', 3000, '2025-02-07 18:42:38', '2025-02-07 18:42:38');
@@ -486,10 +343,10 @@ INSERT INTO `products` VALUES (116, '白巧克力 Pistacchio Crock', '', '白巧
 INSERT INTO `products` VALUES (117, 'SUPREME 榛子', '', '冰淇淋由顶级意大利纯榛子制成。', 2.00, 104, '1738924986464_file-1649365068727.png', 3000, '2025-02-07 18:43:06', '2025-02-07 18:43:06');
 INSERT INTO `products` VALUES (118, '特大号床 Good', '', '榛子冰淇淋配榛子、巧克力和威化饼漩涡，专为意大利 Lucciano\'s 开发。', 2.00, 104, '1738924998473_file-1651840560634.png', 3000, '2025-02-07 18:43:18', '2025-02-07 18:43:18');
 INSERT INTO `products` VALUES (119, '花生焦糖', '', '花生酱冰淇淋，配 stracciatella 巧克力和牛奶焦糖漩涡以及咸花生片。', 2.00, 104, '1738925007124_file-1605795818831.png', 3000, '2025-02-07 18:43:27', '2025-02-07 18:43:27');
-INSERT INTO `products` VALUES (120, 'LUCCIANO 巧克力榛子', '', 'Lucciano\'s 巧克力，巧克力和榛子馅，由 Lucciano\'s 在意大利独家开发。', 2.00, 104, '1738925020818_file-1605793992679.png', 3000, '2025-02-07 18:43:40', '2025-02-07 18:43:40');
+INSERT INTO `products` VALUES (120, 'LUCCIANO 巧克力榛子', '', 'Lucciano\'s 巧克力，巧克力和榛子馅，由 Lucciano\'s 在意大利独家开发。', 2.00, 104, '1738925020818_file-1605793992679.png', 2990, '2025-02-07 18:43:40', '2025-02-07 18:43:40');
 INSERT INTO `products` VALUES (121, '牛奶焦糖巧克力片', '', '牛奶焦糖冰淇淋配半甜意大利 Stracciatella。', 2.00, 104, '1738925028523_file-1610722888238.png', 3000, '2025-02-07 18:43:48', '2025-02-07 18:43:48');
 INSERT INTO `products` VALUES (122, 'WAFERINO 缸', '', '用香草威化饼和夜香威化饼的漩涡制成的冰淇淋。', 2.00, 104, '1738925037484_file-1649364848105.png', 3000, '2025-02-07 18:43:57', '2025-02-07 18:43:57');
-INSERT INTO `products` VALUES (123, '果仁糖', '', 'Gianduia 冰淇淋配 gianduia 奶油漩涡、威化饼和夜蛾。', 2.00, 104, '1738925047076_file-1651678340356.png', 2986, '2025-02-07 18:44:07', '2025-02-07 18:44:07');
+INSERT INTO `products` VALUES (123, '果仁糖', '', 'Gianduia 冰淇淋配 gianduia 奶油漩涡、威化饼和夜蛾。', 2.00, 104, '1738925047076_file-1651678340356.png', 2982, '2025-02-07 18:44:07', '2025-02-07 18:44:07');
 INSERT INTO `products` VALUES (124, '尚蒂伊奶油色带有比利时 stracciatella 的漩涡。', '', 'Gianduia 冰淇淋配 gianduia 奶油漩涡、威化饼和夜蛾。', 2.00, 104, '1738925065500_file-1651840707525.png', 3000, '2025-02-07 18:44:25', '2025-02-07 18:44:25');
 INSERT INTO `products` VALUES (125, 'Sorbet 至尊 80%', '', '纯素 80% 巧克力冰糕', 2.00, 104, '1738925081828_file-1651675957640.png', 3000, '2025-02-07 18:44:41', '2025-02-07 18:44:41');
 INSERT INTO `products` VALUES (126, '香蕉', '', '用新鲜香蕉制成，配以比利时巧克力和牛奶焦糖漩涡。', 2.00, 104, '1738925093788_file-1605796064430.png', 3000, '2025-02-07 18:44:53', '2025-02-07 18:44:53');
@@ -531,7 +388,7 @@ INSERT INTO `products` VALUES (161, '披萨酱糕点', '', '披萨酱糕点', 2.
 INSERT INTO `products` VALUES (162, '菠菜糕点配乳清干酪', '', '菠菜糕点配乳清干酪', 2.00, 107, '1738926432704_download.png', 3000, '2025-02-07 19:07:12', '2025-02-07 19:07:12');
 INSERT INTO `products` VALUES (163, '金枪鱼糕点', '', '金枪鱼糕点', 2.00, 107, '1738926448404_download.webp', 3000, '2025-02-07 19:07:28', '2025-02-07 19:07:28');
 INSERT INTO `products` VALUES (164, '葡萄牙奶油蛋卷配火腿和香肠', '', '葡萄牙奶油蛋卷配火腿和香肠', 2.00, 107, '1738926466602_download.webp', 3000, '2025-02-07 19:07:46', '2025-02-07 19:07:46');
-INSERT INTO `products` VALUES (165, '葡萄牙奶油蛋卷配火腿和奶酪', '', '葡萄牙奶油蛋卷配火腿和奶酪', 2.00, 107, '1738926480574_download.webp', 3000, '2025-02-07 19:08:00', '2025-02-07 19:08:00');
+INSERT INTO `products` VALUES (165, '葡萄牙奶油蛋卷配火腿和奶酪', '', '葡萄牙奶油蛋卷配火腿和奶酪', 2.00, 107, '1738926480574_download.webp', 3, '2025-02-07 19:08:00', '2025-02-07 19:08:00');
 INSERT INTO `products` VALUES (166, '葡萄牙奶油蛋卷配火腿、奶酪和香肠', '', '葡萄牙奶油蛋卷配火腿、奶酪和香肠', 2.00, 107, '1738926497860_download.webp', 3000, '2025-02-07 19:08:17', '2025-02-07 19:08:17');
 INSERT INTO `products` VALUES (167, '奶油蛋卷配香肠', '', '奶油蛋卷配香肠', 2.00, 107, '1738926512291_download.webp', 3000, '2025-02-07 19:08:32', '2025-02-07 19:08:32');
 INSERT INTO `products` VALUES (168, 'Panike® 羊角面包', '', 'Panike® 羊角面包', 2.00, 107, '1738926533217_download.png', 3000, '2025-02-07 19:08:53', '2025-02-07 19:08:53');
@@ -658,7 +515,7 @@ INSERT INTO `products` VALUES (288, 'LANE LINEN 16 件套浴巾套装 - 100% 纯
 INSERT INTO `products` VALUES (289, 'LANE LINEN 16 件套浴巾套装 - 100% 纯棉浴室毛巾套装、高吸水性浴室毛巾、豪华浴巾套装、柔软毛巾、4 条浴巾、4 条手巾、8 条毛巾 - 铂金', '', '优质浴巾套装：使用我们的 600 GSM 100% 优质棉 16 件套固体高吸水毛巾套装，将酒店水疗氛围带回家。这些健身毛巾采用毛圈结构，不仅触感柔软，而且吸水性强，干燥方便舒适。 每套 16 件套铂金毛巾包括：4 条超大浴巾 - 28 英寸 x 54 英寸，4 条手巾 - 16 英寸 x 28 英寸和 8 条毛巾 - 13 英寸 x 13 英寸。每条浴巾、手巾和洗脸巾均采用优质棉花制成，保证在您的皮肤上柔软，让您在淋浴后保持温暖干燥。 护理说明：由于使用了低扭曲环，我们的浴室毛巾提供了极好的柔软度。由于毛巾含有 100% 棉绒，您可能会在前几次使用时看到一些棉绒，但每次洗涤后应该会减少。为获得最佳使用效果，首次使用时请单独清洗。始终单独清洗毛巾，以减少棉绒。 Oeko-Tex 认证：我们的浴室毛巾套装由 OEKO-TEX 认证工厂制成。这些浴巾浴室套装非常适合任何浴室配件。这些豪华浴巾采用美丽的纯色设计，可与任何浴室装饰相配。 满意保证：具有优质酒店水疗品质的最佳浴巾。我们相信我们产品的耐用性和柔软性。但是，以防万一，如果您对购买不满意，我们提供 30 天退款保证。这是男士和女士、妈妈和爸爸的完美礼物，情人节 - 母亲 - 父亲节和圣诞节。', 2.00, 110, '1738929612927_81lqVnewYlL._AC_SL1500_.jpg', 3000, '2025-02-07 20:00:12', '2025-02-07 20:00:12');
 INSERT INTO `products` VALUES (290, 'LANE LINEN 16 件套浴巾套装 - 100% 纯棉浴室毛巾套装、高吸水性浴室毛巾、豪华浴巾套装、柔软毛巾、4 条浴巾、4 条手巾、8 条毛巾 - 铂金', '', '优质浴巾套装：使用我们的 600 GSM 100% 优质棉 16 件套固体高吸水毛巾套装，将酒店水疗氛围带回家。这些健身毛巾采用毛圈结构，不仅触感柔软，而且吸水性强，干燥方便舒适。 每套 16 件套铂金毛巾包括：4 条超大浴巾 - 28 英寸 x 54 英寸，4 条手巾 - 16 英寸 x 28 英寸和 8 条毛巾 - 13 英寸 x 13 英寸。每条浴巾、手巾和洗脸巾均采用优质棉花制成，保证在您的皮肤上柔软，让您在淋浴后保持温暖干燥。 护理说明：由于使用了低扭曲环，我们的浴室毛巾提供了极好的柔软度。由于毛巾含有 100% 棉绒，您可能会在前几次使用时看到一些棉绒，但每次洗涤后应该会减少。为获得最佳使用效果，首次使用时请单独清洗。始终单独清洗毛巾，以减少棉绒。 Oeko-Tex 认证：我们的浴室毛巾套装由 OEKO-TEX 认证工厂制成。这些浴巾浴室套装非常适合任何浴室配件。这些豪华浴巾采用美丽的纯色设计，可与任何浴室装饰相配。 满意保证：具有优质酒店水疗品质的最佳浴巾。我们相信我们产品的耐用性和柔软性。但是，以防万一，如果您对购买不满意，我们提供 30 天退款保证。这是男士和女士、妈妈和爸爸的完美礼物，情人节 - 母亲 - 父亲节和圣诞节。', 2.00, 110, '1738929617526_91VrcBo1BEL._AC_SL1500_.jpg', 3000, '2025-02-07 20:00:17', '2025-02-07 20:00:17');
 INSERT INTO `products` VALUES (291, '小垃圾袋 4 加仑 - 100 个装 4 加仑垃圾袋，办公室卧室浴室小垃圾袋，白色 4 加仑小垃圾桶衬垫', '', '4 加仑垃圾袋 - 尺寸为 17.7 英寸宽 x 19.7 英寸高，这些小垃圾袋可轻松容纳高达 4 加仑的垃圾桶。尺寸恰到好处，非常适合大多数小型垃圾桶 实用耐用性 - 小垃圾袋足够坚固，可以处理日常生活垃圾，除非是尖锐的物体。星形密封底部确保强度并避免泄漏 100 计数 - 总共 100 计数的超值，可以持续很长时间 半透明和穿孔 - 白色半透明，便于垃圾分类。穿孔，易于撕裂 用途广泛 - 使用我们的无味4加仑垃圾袋处理日常家庭垃圾需求。适合作为办公室、卧室、厨房和浴室垃圾袋。出色的小垃圾桶衬垫，满足您的日常清洁需求', 2.00, 110, '1738929850591_61FOUHlcOWL._AC_SL1500_.jpg', 3000, '2025-02-07 20:04:10', '2025-02-07 20:04:10');
-INSERT INTO `products` VALUES (292, '重型超强 13 加仑垃圾袋，高厨房垃圾袋由回收材料制成，包括沿海塑料，拉绳，防泄漏和穿刺，灰色，海边微风香味，80 个袋子', '', '大垃圾袋：此包装包含 80 个重型超强高厨房 13 加仑垃圾袋，由 35% 的回收材料制成，包括 10% 的沿海塑料*、灰色、海边微风香味 持续气味控制：高厨房垃圾袋具有持续气味控制和 Seaside Breeze 香味，可对抗难闻的气味，让您的厨房保持清新气味 6 合 1 保护：灵活的香味大垃圾袋由沿海和再生塑料制成，提供 6 个保护点，将垃圾保持在应有的位置：弯曲强度、坚韧的拉绳、气味控制以及防泄漏、穿刺和撕裂 可靠的拉绳闭合：这些厨房垃圾袋上的耐用拉绳使其易于运输重物、捐赠物、季节性物品等 100%满意保证：我们希望您对13加仑大小的重型垃圾袋感到满意，如果您有任何问题，请通过包装背面的热线号码与我们联系，以便我们提供帮助。', 2.00, 110, '1738929867368_81P0YlvPuxL._AC_SL1500_.jpg', 3000, '2025-02-07 20:04:27', '2025-02-07 20:04:27');
+INSERT INTO `products` VALUES (292, '重型超强 13 加仑垃圾袋，高厨房垃圾袋由回收材料制成，包括沿海塑料，拉绳，防泄漏和穿刺，灰色，海边微风香味，80 个袋子', '', '大垃圾袋：此包装包含 80 个重型超强高厨房 13 加仑垃圾袋，由 35% 的回收材料制成，包括 10% 的沿海塑料*、灰色、海边微风香味 持续气味控制：高厨房垃圾袋具有持续气味控制和 Seaside Breeze 香味，可对抗难闻的气味，让您的厨房保持清新气味 6 合 1 保护：灵活的香味大垃圾袋由沿海和再生塑料制成，提供 6 个保护点，将垃圾保持在应有的位置：弯曲强度、坚韧的拉绳、气味控制以及防泄漏、穿刺和撕裂 可靠的拉绳闭合：这些厨房垃圾袋上的耐用拉绳使其易于运输重物、捐赠物、季节性物品等 100%满意保证：我们希望您对13加仑大小的重型垃圾袋感到满意，如果您有任何问题，请通过包装背面的热线号码与我们联系，以便我们提供帮助。', 2.00, 110, '1738929867368_81P0YlvPuxL._AC_SL1500_.jpg', 10, '2025-02-07 20:04:27', '2025-02-11 17:01:31');
 INSERT INTO `products` VALUES (293, '大型小垃圾袋，翻盖领带，薰衣草和甜香草香味，4加仑，26个装', '', '这个包装包含26个Hefty Flap Tie，小垃圾，白色，4加仑垃圾袋，带有薰衣草和甜香草香味，每个0.5毫米厚 迷你垃圾袋的尺寸非常适合用于浴室、卧室、汽车和家庭办公室的较小垃圾桶 翻盖系带开合便于密封和取出小垃圾袋 各种香味的小垃圾袋具有专利的Arm & Hammer气味中和剂，可以抵抗难闻的气味，保持厨房清新的气味。 超小号浴室垃圾袋采用可回收包装，确保环保', 2.00, 110, '1738929879030_81dXKhq96mL._AC_SL1500_.jpg', 3000, '2025-02-07 20:04:39', '2025-02-07 20:04:39');
 INSERT INTO `products` VALUES (294, 'Charmount 4加仑垃圾袋 - 适用于浴室、厨房、卧室、办公室的小拉绳垃圾袋，60个装（升级 - 易于分离）', '', '抽绳封口 - 为了减少恶臭和便于携带，4 加仑垃圾袋设计有耐用的抽绳系带。它使我们的垃圾袋很容易捆绑和扔掉 坚固的结构：这些 4 加仑的袋子由耐用的材料制成，足够坚固，适合日常使用，防止泄漏和撕裂，保护您的垃圾安全 3-5 加仑容量 - 抽绳垃圾袋适用于 4 加仑垃圾桶（10-15L）。4 加仑垃圾袋的尺寸为 17.7 英寸宽 x 19.7 英寸高（45 厘米 x 50 厘米） 使用方便 - 4 加仑大小的小型垃圾袋总共有 60 个。轻松快速地分离一个新的，以便在袋子之间有一个漂亮的穿孔边缘 多用途 - 它不仅可以作为浴室、厨房、办公室、卧室、户外、汽车、宠物砂和婴儿尿布处理的小垃圾袋，而且是存放季节性物品和衣物的理想选择', 2.00, 110, '1738929896328_71OGD1bfPpL._AC_SL1500_.jpg', 3000, '2025-02-07 20:04:56', '2025-02-07 20:04:56');
 INSERT INTO `products` VALUES (295, '100 个 4 加仑小黑色垃圾袋，耐用的 PE 材料，手柄，断点，46x60 厘米', '', '[坚固耐用的 4 加仑垃圾袋]：这些黑色小垃圾袋具有良好的韧性，不易撕裂。黑色垃圾袋已经过测试，可承受 15.43-17.63 磅（7-8 公斤）的最大重量，其强度足以满足日常生活需求，但要避免使用尖锐物品。 [4 加仑垃圾袋材料]：这些小黑色垃圾袋仅使用纯 PE 材料以确保您的安全和健康。小垃圾袋足够耐用，可以防止撕裂、防漏、防刺穿、有弹性。 [内置手柄和断点设计]：小垃圾袋采用手持设计，便于携带和悬挂，方便牢固地关闭丢弃物。这些 4 加仑垃圾袋的断点清晰，易于从卷筒中撕开。我们的小型黑色垃圾袋具有出色的抗穿刺和抗撕裂性。 [小黑色垃圾袋尺寸]：4 加仑垃圾袋尺寸为 46*60cm/18*23.62in.20 计数/卷，5 卷，共 100 计数。 [多用途 4 加仑垃圾袋]：小型垃圾袋不仅设计用于室内使用（用于办公室、厨房、客厅、卧室、浴室、碎纸机等），还适用于户外应用（猫砂、狗粪、汽车垃圾等）。', 2.00, 110, '1738929916888_51GPBjUuD5L._AC_SL1024_.jpg', 3000, '2025-02-07 20:05:16', '2025-02-07 20:05:16');
@@ -666,82 +523,259 @@ INSERT INTO `products` VALUES (296, 'The Honest Company Clean Conscious 无香�
 INSERT INTO `products` VALUES (297, 'Bedsure 白色沙发毯 - GentleSoft 女士舒适柔软毯子，可爱的小女孩羊毛毯，米白色，50x60 英寸', '', '送给亲人的礼物：这款超柔软的条纹法兰绒情人节抛毯是任何场合的完美礼物。其舒适舒适的设计提供了一种周到的方式来表达您的关心，全年提供温暖和时尚。非常适合作为爱情节日的顶级情人节礼物之一。 超柔软：这款条纹法兰绒绒毯采用增强的优质微纤维。其蓬松和超舒适的柔软性一年四季都提供最大的舒适感，使其成为备受赞赏的爱情礼物选择，非常适合情人节的舒适夜晚。 温暖而轻便：这款柔软舒适的毯子在重量和保暖之间保持了理想的平衡。当您准备依偎在这款柔软、平静的毯子中时，享受被拥抱的乐趣，使其成为送给她的情人节礼物的绝佳选择。 精致设计：这款毛茸茸的毯子采用经典的条纹图案，毫不费力地提升了您房间的装饰。非常适合在床上、沙发上或任何您想舒适放松的地方使用，它是送给女性礼物的绝佳选择。 耐用：这款毛绒毯子采用整齐的缝线设计，增强了耐用性，耐用性强。独特的染色技术确保鲜艳的色彩，即使经过多次洗涤也不会褪色——一定会成为难忘的情人节礼物。', 2.00, 110, '1738929979438_617jWhurG3L._AC_SL1500_.jpg', 3000, '2025-02-07 20:06:19', '2025-02-07 20:06:19');
 INSERT INTO `products` VALUES (298, 'LANE LINEN 100%埃及棉床单特大号 - 1000线程计数，4件套特大号床单套装，光滑缎面编织特大号床单，超豪华床单，16英寸深口袋特大号床单套装 - 白色床单', '', '豪华感觉：体验这款由 100% 埃及棉制成的优质棉白色国王床单套装带来的无与伦比的舒适和奢华。这些埃及床单具有 1000 支高支数，确保如丝般光滑的质地，让您尽情享受舒适奢华的睡眠。 非常适合特大号床：这些特大号白色床单埃及棉套装包括1张带有深口袋和完全弹性边缘的床单：79“ x 81” + 16“确保在特大号床垫上紧密且安全地贴合，1张白色平面特大号床单：112” x 104“和2个特大号枕头套：20” x 36“， 提供全面覆盖和无缝的床上外观。 透气凉爽的床单：这些白色的王白色床单具有出色的透气性，促进更好的气流并在整个晚上调节温度。这些特大号埃及棉床单注重舒适和美学，具有优雅和永恒的设计。它们有一系列经典颜色可供选择，毫不费力地与任何卧室装饰相得益彰，为您的睡眠空间增添一丝精致感。 丝般柔软且耐用：这些白色床单国王由 100% 埃及棉制成，以其卓越的柔软性和耐用性而闻名。为了确保让人联想到高端酒店床单的奢华品质，我们采用了两股纱线方法，实现了 1000 支的奢华纱线。请注意，由于制造过程的限制，线程计数可能会有高达 +/- 5% 的轻微差异。 易于护理：这些白色床单套装特大号在冷水中用温和的洗涤剂轻轻循环机洗，然后在低温或精细设置下烘干，以保持其柔软度和质量。我们所有的床单套装都通过了 OEKO-TEX 认证，并包装在可重复使用的棉袋中，展示了我们对质量和可持续性的承诺。', 2.00, 110, '1738929993881_71Gffcjm4UL._AC_SL1500_.jpg', 3000, '2025-02-07 20:06:33', '2025-02-07 20:06:33');
 INSERT INTO `products` VALUES (299, 'VALITIC 曲酸淡斑去除皂条含维生素 C、视黄醇、胶原蛋白、姜黄 - 原味日本复合物注入透明质酸、维生素 E、乳木果油、卡斯蒂利亚橄榄油（2 包）', '', 'Dark Spot Corrector：原创的日本黑斑修正复合物，我们的肥皂促进平衡、更均匀的色调和健康的光泽;你可以用它来做你的脸、手、脖子、比基尼区域、大腿内侧和腋下。 维生素 C、视黄醇和胶原蛋白：作为组合，它们可以帮助您的皮肤从内到外保持水分，最大限度地减少阳光伤害、黑斑和瑕疵，从而获得光滑和容光焕发的皮肤 姜黄皮肤：有益皮肤的品质。我们的肥皂采用清洁皮肤的姜黄配制而成，有助于恢复水分平衡，让您的皮肤从晒伤、细纹和皱纹中恢复活力;姜黄还可以减少疤痕;这种用途组合可以帮助您的面部清除痤疮爆发 恢复活力、去角质和滋养黑斑区域：我们的肥皂含有透明质酸、维生素 E、乳木果油和卡斯蒂利亚橄榄油，可渗透、活化您的皮肤 不含 SLS 和对羟基苯甲酸酯：非常适合日常使用！这种姜黄皂可用于清洁大部分皮肤;首先，用温水润湿皮肤，将姜黄皂均匀涂抹在皮肤上;然后，按摩 20-30 秒，最后用水冲洗干净 安全使用说明：如果您对本产品的任何成分过敏，请勿使用本产品。使用前进行斑贴试验。如果出现刺激，请停止使用。开封后 8 个月内使用。仅按指示使用', 2.00, 110, '1738930006143_51iMh82b5UL._SL1205_.jpg', 3000, '2025-02-07 20:06:46', '2025-02-07 20:06:46');
-INSERT INTO `products` VALUES (300, '商品', '商品型号', '商品信息', 10.00, 1, '1738931521592_1.png,1738931521610_wallhaven-d6edoj_1920x1080.png,1738931521623_锁屏.png', 2000, '2025-02-07 20:32:01', '2025-02-07 20:32:01');
-INSERT INTO `products` VALUES (301, '商品名', '商品型号', '商品信息', 10.00, 1, '1738932607594_picX.png,1738932607603_picX1.png', 2000, '2025-02-07 20:50:07', '2025-02-07 20:50:07');
-INSERT INTO `products` VALUES (302, '商品名', '商品型号', '商品信息', 10.00, 1, '1738932726078_picX.png,1738932726090_picX1.png', 2000, '2025-02-07 20:52:06', '2025-02-07 20:52:06');
 INSERT INTO `products` VALUES (303, 'The Honest Company Clean Conscious 无香湿巾 |超过 99% 的水、可堆肥、植物基、婴儿湿巾 |敏感肌肤低过敏性，EWG 验证...', '', '清理生活中的所有烂摊子。可堆肥、植物性多用途湿巾由超过 99% 的水和仅 7 种透明成分制成，对婴儿的敏感皮肤温和安全，但对全家人都很好 低过敏性，无香料，经过皮肤科医生测试，并获得国家湿疹认可印章，这意味着您可以相信该产品是安全的，适合皮肤敏感的人 尿布任务及其他：这些水湿巾非常耐用且超厚，配有方便的翻盖分配器 - 可用于所有家用表面，用于锻炼后焕然一新，清洁宠物的爪子，擦拭弄脏的玩具、凌乱的手指和尘土飞扬的植物 低过敏性;经皮肤科医生测试;EWG 验证;零残忍;NEA 认可;可堆肥并在 8 周内分解 不含： 塑料布/织物， 香水， 对羟基苯甲酸酯， 酒精， 氯处理', 2.00, 110, '1738933695003_81pxubtHa0L._SL1500_.jpg', 3000, '2025-02-07 21:08:15', '2025-02-07 21:08:15');
 INSERT INTO `products` VALUES (304, 'Sharpty - 塑料挂架 - 成人衣物挂架 - T恤，连衣裙，衣架和配件 - 缺口挂架，耐用且多功能的彩色衣物衣架（20包，白色）', '', 'Sharpty - 塑料挂架 - 成人衣物挂架 - T恤，连衣裙，衣架和配件 - 缺口挂架，耐用且多功能的彩色衣物衣架（20包，白色）', 2.00, 110, '1738934272902_71naMNm1qkL._AC_SL1500_.jpg,1738934272904_71Mly4479hL._AC_SL1500_.jpg', 3000, '2025-02-07 21:17:52', '2025-02-08 19:10:54');
 INSERT INTO `products` VALUES (305, 'Sharpty - 塑料挂架 - 成人衣物挂架 - T恤，连衣裙，衣架和配件 - 缺口挂架，耐用且多功能的彩色衣物衣架（20包，白色）', '', 'Sharpty - 塑料挂架 - 成人衣物挂架 - T恤，连衣裙，衣架和配件 - 缺口挂架，耐用且多功能的彩色衣物衣架（20包，白色）', 2.00, 110, '1738934425226_71naMNm1qkL._AC_SL1500_.jpg,1738934425229_81JJAsHZpyL._AC_SL1500_.jpg,1738934425232_81inLyaZcfL._AC_SL1500_.jpg,1738934425235_81iSCLtuBOL._AC_SL1500_.jpg,1738934425239_71Mly4479hL._AC_SL1500_.jpg', 3000, '2025-02-07 21:20:25', '2025-02-07 21:20:25');
 INSERT INTO `products` VALUES (306, 'Sharpty - 塑料挂架 - 成人衣物挂架 - T恤，连衣裙，衣架和配件 - 缺口挂架，耐用且多功能的彩色衣物衣架（20包，白色）', '', 'Sharpty - 塑料挂架 - 成人衣物挂架 - T恤，连衣裙，衣架和配件 - 缺口挂架，耐用且多功能的彩色衣物衣架（20包，白色）', 2.00, 110, '1738934434363_71naMNm1qkL._AC_SL1500_.jpg,1738934434366_81JJAsHZpyL._AC_SL1500_.jpg,1738934434369_81inLyaZcfL._AC_SL1500_.jpg,1738934434371_81iSCLtuBOL._AC_SL1500_.jpg,1738934434375_71Mly4479hL._AC_SL1500_.jpg', 3000, '2025-02-07 21:20:34', '2025-02-07 21:20:34');
 INSERT INTO `products` VALUES (307, 'Sharpty - 塑料挂架 - 成人衣物挂架 - T恤，连衣裙，衣架和配件 - 缺口挂架，耐用且多功能的彩色衣物衣架（20包，白色）', '', '👚 最大化空间并保持整洁：Sharpty 塑料挂架设计成纤薄的外形，以充分利用您的衣柜空间，同时保持整洁有序！使用我们的高品质衣架可以节省时间，因为您可以轻松找到所需的衣服。 👚 耐用材料：采用增强塑料边缘和耐用材料制成，我们的衣架一定会提供完美的稳定性，以满足您的所有标准服装需求以及较重的外套或夹克！凭借其光滑的表面，无需担心衣服上的污垢、折痕或痕迹。 👚 嵌入式凹槽：这些多功能衣架非常适合制作服装，但也可用于其他配件，如领带、腰带、披肩、细带衬衫、背心、吊带衫，甚至女士内衣。这些防滑衣架配有缺口肩部，可将您的衣物牢固地固定到位。 👚 面料友好设计：我们的白色塑料衣架光滑、干净的表面对您的衣服很温和。没有粗糙或锋利的边缘可能会损坏或在您的衣服上留下不需要的折痕或痕迹。相信我们会为您的壁橱和橱柜提供最有价值的组织工具。 👚 无忧保修：我们提供 1 年全面保修。如果您因任何原因不满意，请告诉我们，我们将尽一切努力解决问题。依赖我们的优质衣架，让您的衣橱保持整洁！', 2.00, 110, '1738934467808_71naMNm1qkL._AC_SL1500_.jpg,1738934467811_71Mly4479hL._AC_SL1500_.jpg', 3000, '2025-02-07 21:21:07', '2025-02-07 21:21:07');
-INSERT INTO `products` VALUES (308, '11', '11', '11', 10.00, 11, '1738936602398_1.png,1738936602409_wallhaven-d6edoj_1920x1080.png,1738937396501_1.png,1738937396519_wallhaven-d6edoj_1920x1080.png,1738937396531_锁屏.png,1739012561540_wallhaven-d6edoj_1920x1080.png,1739012561550_锁屏.png,1739012561551_1.png', 11, '2025-02-07 21:56:42', '2025-02-08 19:02:41');
-INSERT INTO `products` VALUES (309, '测试商品123', '123', '123', 123.00, 123, '1739016451523_ts2.jpg,1739016451528_tx.jpg,1739016451529_photo_2024-03-27_13-20-37.jpg', 123, '2025-02-08 20:07:31', '2025-02-08 20:09:25');
+INSERT INTO `products` VALUES (310, '重型挖掘铲斗', '20-24T 挖掘铲斗 1200mm 宽', '释放我们的重型挖掘桶的多功能性和耐用性，也被称为GP，通用，软糖，服务，标准或挖沟桶。  ‍  采用双半径设计、侧铣刀、无缝集成的头架。该铲斗将在最苛刻的环境中保持较高的结构完整性和作业现场效率。  ‍  所有标准铲斗均采用 400 级钢制成，可升级为 HARDOX 450 和双合金钢。挖沟斗的宽度有300毫米、450毫米、600毫米、900毫米、1200毫米和1500毫米。所有挖掘桶都预装了所有磨损部件齿、侧刀和磨损保护装置，以及用于直接安装和快速挂钩使用的销钉。  ‍  这伴随着我们的标准 5 年保修和免费维修套件（价值高达 2,090 美元），其中包括一整套备用齿（包括销和保持器）+ 侧刀（包括螺栓和螺母）。  ‍', 1000.00, 999, '1739428468093_1 (1).webp,1739428468095_1 (2).webp,1739428468095_1 (3).webp,1739428468096_1 (4).webp,1739428468097_1 (5).webp,1739428468098_1 (6).webp,1739428468098_1 (7).webp', 1000, '2025-02-13 14:34:28', '2025-02-13 14:34:28');
+INSERT INTO `products` VALUES (311, '重型泥斗', '20-24T 泥斗 2000 毫米宽', '使用我们的重型泥斗（也称作铲斗、修整斗、平地斗、宽斗或清洁斗）可以高效地完成工作。 铲斗具有可翻转的栓接边缘、侧壁卡块、底板条、加固侧板和桁条，可有效防止磨损和扭转应力，从而将使用寿命延长一倍，减少不必要的停机时间。 ‍ 采用 400 级钢材制造，在高接触点上增加了 345 块耐磨板，也可根据要求定制钢材等级，包括 HARDOX 450 和 Bisalloy。所有泥斗都预装了所有耐磨部件和螺栓边缘，以及两个销钉，可直接安装和与快速接头一起使用。 ‍ 所有泥斗均提供标准的 5 年保修和免费维修包（RRP： 高达 2,200 美元），其中包括备用栓边、螺母和螺栓，因此所有客户均可在不增加额外费用的情况下最大限度地延长附件的使用寿命。', 1000.00, 999, '1739429104948_66b197dcfd072b5112f5ef09_Mud Bucket.webp,1739429104948_66b5712a3073da0bff80d827_ABMB - 10.webp,1739429104948_66b04d5d579de4c891b7d7ce_66838b19f70ca0a828c5eb96_ABMB-5.webp,1739429104948_66b04d5d579de4c891b7d7d0_66838b19f70ca0a828c5eb93_ABMB-4.webp,1739429104948_66b04d5d579de4c891b7d7d3_66838b19f70ca0a828c5eb9b_ABMB-3.webp,1739429104948_66b04d5d579de4c891b7d7cd_66838b19f70ca0a828c5eb90_ABMB-2.webp,1739429104948_66b04d5d579de4c891b7d7d2_66838b19f70ca0a828c5eb9e_ABMB-1.webp', 1000, '2025-02-13 14:45:05', '2025-02-13 14:45:05');
+INSERT INTO `products` VALUES (312, '重型岩石筛斗', '40-50T 重型岩石筛斗 1650mm 宽。', '使用我们的重型岩石筛分斗（业内也称为岩石振动筛、岩石筛分或岩石分离铲斗）解锁高级物料筛选技能。  ‍  拥有开放式设计、增强耐磨镀层、高穿透岩石齿、压缩缓解出口和侧刀，该桶可以轻松承受磨损和变形，同时在分类土壤、岩石和废物方面表现出色，具有增强的功能性和减少的循环时间。  ‍  从各种钢材中进行选择，包括：400 级钢、HARDOX 450 或双合金钢。所有岩石筛分斗都预装了所有齿和易损件，以及两个销钉，用于直接安装和快速铰链使用。  ‍  所有岩石筛分斗都配有我们的标准 5 年保修和免费维修套件（建议零售价高达 3,554 美元），其中包括一套备用的齿和侧刀（包括销、保持器、螺母和螺栓），因此所有客户都可以最大限度地延长其附件的使用寿命，而无需额外费用。', 1000.00, 999, '1739429252634_66b19871f851636464da548d_Rock Sieve Bucket-p-500.webp,1739429252634_66b576a14395fb47a1c9302e_ABRSB - 7.webp,1739429252636_66b04d5d579de4c891b7d7af_66838b19b37b631e714bff83_ABRSB-4.webp,1739429252637_66b04d5d579de4c891b7d7ac_66838b19b37b631e714bff7a_ABRSB-3.webp,1739429252638_66b04d5d579de4c891b7d7ad_66838b19b37b631e714bff7e_ABRSB-2.webp,1739429252638_66b04d5d579de4c891b7d7aa_66838b19b37b631e714bff76_ABRSB-1.webp', 1000, '2025-02-13 14:47:33', '2025-02-13 14:47:33');
+INSERT INTO `products` VALUES (313, '洪流 LED 手电筒', 'T500-BK ', '紧凑而强大的可潜水手电筒。 Princeton Tec Torrent 足够小，可以作为备用灯携带，并且具有 500 流明，也足以用作主光源。这款可潜水手电筒的防护等级为 IPX8，防水深度可达 100 米，可应对苛刻的环境。这款灯还具有一个易于使用、易于戴手套使用的开关，该开关可锁定到位，以避免在运输或储存过程中意外激活。这款手电筒也适用于紧急情况，虽然它使用 8 节 AA 电池供电，但它仍然会以较低的容量运行，只有 4 节。', 30.00, 130, '1739429492916_princeton-tec-torrent-black-main-1024x768.webp,1739429492917_princeton-tec-torrent-black-back-1024x768.webp,1739429492918_princeton-tec-torrent-black-front-1024x768.webp', 1000, '2025-02-13 14:51:33', '2025-02-13 14:51:33');
+INSERT INTO `products` VALUES (314, 'AT22-BK 防水手持手电筒', 'AT22-BK', '重量轻，携带方便，其 IPX8 防水等级和扭结圈激活功能适用于任何苛刻的环境，作简单且适合戴手套。', 30.00, 130, '1739429673366_princeton-tec-attitude-black-side-1024x768.webp,1739429673367_princeton-tec-attitude-black-front-1024x768.webp,1739429673368_princeton-tec-attitude-black-back-1024x768.webp,1739429673369_princeton-tec-attitude-black-main-1024x768.png,1739429673478_princeton-tec-attitude-black-back-clip-1024x768.png', 1000, '2025-02-13 14:54:33', '2025-02-13 14:54:33');
+INSERT INTO `products` VALUES (315, 'Blonde ALE ', 'Blonde ALE ', 'Blonde ALE ', 10.00, 18, '1739435286892_hapchot-blonde_ale-botle-33cl-262x1024.webp', 1000, '2025-02-13 16:28:07', '2025-02-13 16:28:07');
+INSERT INTO `products` VALUES (316, 'Neipa ', 'Neipa ', 'Neipa ', 10.00, 18, '1739435369956_hapchot-neipa-can-33cl-434x1024.webp', 1000, '2025-02-13 16:29:30', '2025-02-13 16:29:30');
+INSERT INTO `products` VALUES (317, 'Neipa 2', 'Neipa 2', 'Neipa 2', 10.00, 18, '1739435430362_hapchot-west_coast-can-33cl-434x1024.webp', 1000, '2025-02-13 16:30:30', '2025-02-13 16:30:30');
+INSERT INTO `products` VALUES (318, 'Neipa 2', 'Neipa 2', 'Neipa 2', 10.00, 18, '1739435459625_hapchot-tropical_sour-can-33cl-434x1024.webp', 1000, '2025-02-13 16:31:00', '2025-02-13 16:31:00');
+INSERT INTO `products` VALUES (319, '小麦果汁', 'Neipa 3', 'Neipa 3', 10.00, 18, '1739435526642_1.webp', 1000, '2025-02-13 16:32:07', '2025-02-13 16:32:07');
+INSERT INTO `products` VALUES (320, '小麦果2', 'Neipa 3', 'Neipa 3', 10.00, 18, '1739435555710_hapchot-imperial_pale_ipa-botle-33cl-262x1024.webp', 1000, '2025-02-13 16:32:36', '2025-02-13 16:32:36');
+INSERT INTO `products` VALUES (321, '小麦果4', 'Neipa 4', 'Neipa 4', 10.00, 18, '1739435737813_hapchot-imperial_pale_ipa-botle-75cl-261x1024.webp', 1000, '2025-02-13 16:35:38', '2025-02-13 16:35:38');
+INSERT INTO `products` VALUES (322, '小麦果汁 5', 'Neipa 5', 'Neipa 5', 10.00, 18, '1739435963633_kola-original-teaser-default.c9f2df98.webp', 1000, '2025-02-13 16:39:24', '2025-02-13 16:39:24');
+INSERT INTO `products` VALUES (323, 'Mayor ', 'Mayor ', 'Mayor ', 10.00, 19, '1739436333076_mayor_69acafd9-dd65-4d47-966f-42a148577054.webp', 1000, '2025-02-13 16:45:33', '2025-02-13 16:45:33');
+INSERT INTO `products` VALUES (324, 'Sunrise Espresso - 无咖啡因', '无咖啡因', '我们流行的 Sunset Sipper 的这个深色版本是为我们的客户开发的，该客户需要更强大的服务形象。Sunrise Espresso 的 80% 可可布朗尼蛋糕与松脆的香草华夫饼混合在一起，将为您提供过滤器所需的温暖，是牛奶饮料的完美伴侣。    我们目前的 Sunrise Espresso 无咖啡因咖啡来自秘鲁，无论您喜欢如何准备咖啡、过滤器或浓缩咖啡，它都是您今年将拥有的最好的秘鲁咖啡之一。', 8.00, 19, '1739436437308_sunrise.webp', 1000, '2025-02-13 16:47:17', '2025-02-13 16:47:17');
+INSERT INTO `products` VALUES (325, 'Epic Espresso ', '无咖啡因', '当季时，充满果汁、糖分和酸度的水果令人垂涎欲滴，这正是我们的 Espresso Saisonnier 的感觉。     我们想到了所有喜欢埃塞俄比亚自然过程咖啡多汁的人。我们采用了我们著名的 Secret Sauce，推动了热量和显影时间，以获得一种平易近人但果味浓郁的咖啡，非常适合注入您的家用浓缩咖啡机中。     这种混合物是我们首席烘焙师的游乐场，因为季节的起源是旋转的。打开一个袋子，咬进去。', 8.00, 19, '1739436547291_epique.webp', 1000, '2025-02-13 16:49:07', '2025-02-13 16:49:07');
+INSERT INTO `products` VALUES (326, 'Hooké', '无咖啡因', '我们烤制了水洗哥伦比亚和天然巴西的混合物，带您回到被古老森林环绕的湖边的那些清新早晨。     能够用简单的日常设备冲泡这种混合咖啡，是这款咖啡开发的核心：Hooké 混合咖啡用途广泛，可以作为过滤咖啡、浓缩咖啡、法式压榨机和意大利咖啡机享用。', 8.00, 19, '1739436607165_hooke_538aa418-f74f-42d9-a772-2c7f6b0d3e81.webp', 1000, '2025-02-13 16:50:07', '2025-02-13 16:50:07');
+INSERT INTO `products` VALUES (327, 'Happy Dani ', '1', 'Happy Dani 以巴西 Barbosa 家庭农场的创始人 Danilo Barbosa 的名字命名。这款咖啡是在庆祝他在尊重周围自然和环境的同时生产优质咖啡的才华。质量是 Danilo 和他的家人所做工作的核心。  这款 Yellow Catuai 的自然过程让人一笑置之：它的多功能性会让任何喝酒、喝拿铁咖啡或啜饮一杯黑滴剂的人感到高兴。来吧，冲泡一杯咖啡，露出你的笑容。', 8.00, 19, '1739436790830_happy_dani.webp', 1000, '2025-02-13 16:53:11', '2025-02-13 16:53:11');
+INSERT INTO `products` VALUES (328, 'The Box', '1', '选择您最喜欢的系列、您想要接收的包袋数量、我们精选客户欢迎的 drop 和 boom 的频率。     您不仅可以获得高达 15% 的折扣、免费送货、将市场上最好的可堆肥袋中的咖啡豆送到您家门口，您还将成为我们珍视的 VIP 名单的一部分。您的盒子里会收到惊喜，我们会记住您的生日，并可能要求圣诞老人给您一份特别的礼物。', 50.00, 19, '1739436891602_boite-escape_745cfba6-141f-43b5-a65a-f8c0726263be.webp', 1000, '2025-02-13 16:54:52', '2025-02-13 16:54:52');
+INSERT INTO `products` VALUES (329, '有机奶油咖啡', '黑巧克力 |螺母 |烤杏仁', '这种混合物含有来自印度的浓郁罗布斯塔，使其特别浓郁和奶油味。坚果和高贵的酸巧克力的香气也暗示了印度的起源——同时，令人兴奋的阿拉比卡风味提供了有趣而平衡的味道。', 10.00, 20, '1739437467712_Paul-und-Bohne-Blend-CremeDeLa-Crema-2024-10-300x300.png', 1000, '2025-02-13 17:04:28', '2025-02-13 17:04:28');
+INSERT INTO `products` VALUES (330, ' 有机阿拉比卡咖啡', '90% 有机阿拉比卡咖啡', '混合物中的多面手 - 不仅在过滤器中制备的美妙甜味令人信服，而且在移动式过滤器中呈现出令人愉悦的果味。罗布斯塔的比例创造了饱满的口感，同时创造了强烈的味觉体验。', 10.00, 20, '1739437531957_Paul-und-Bohne-Blend-OhMyBlend-300x300.png', 1000, '2025-02-13 17:05:32', '2025-02-13 17:05:32');
+INSERT INTO `products` VALUES (331, '柑橘咖啡', '绿茶 |柑橘类水果 |青苹果', '这种拉丁美洲-非洲混合咖啡将水果风味与巧克力和坚果相结合。City Roast 提供明显的酸度，并带有淡淡的绿茶味。', 10.00, 20, '1739437702273_Paul-und-Bohne-Blend-Kaffeeklatsche-300x300.png', 1000, '2025-02-13 17:08:22', '2025-02-13 17:08:22');
+INSERT INTO `products` VALUES (332, '有机 Créme de la Crema 胶囊', '90% 有机阿拉比卡咖啡 10 % 有机罗布斯塔 黑巧克力 |螺母 |烤杏仁', '顾名思义，这是我们最强大的混合物。50/50 混合物提供大量的油脂，几乎没有任何酸度，并赋予咖啡浓郁的口感。略深的维也纳烤肉散发出浓郁的黑巧克力和烤核桃的香气。空气中弥漫着意大利度假的气息。 15 粒胶囊（TÜV 认证的家庭可堆肥咖啡胶囊）。 适用于 2015 年以后的 Nespresso® Original 咖啡机。 不适用于 Nespresso® Vertuo 咖啡机。', 80.00, 20, '1739437817657_Paul-und-Bohne-Blend-CremeDeLaCrema-Kapsel-300x300.png', 1000, '2025-02-13 17:10:18', '2025-02-13 17:10:18');
+INSERT INTO `products` VALUES (333, '水果冰沙', '1', '我们的冰沙仅由水果、蔬菜、植物奶和超级食品等天然成分制成。它们是 100% 天然和功能性的冰沙，由营养师开发和批准，用于富含维生素、纤维和营养素的饮食，以提供和改善我们身体的营养。', 3.00, 21, '1739438140906_smoothie-proteinado-1.webp,1739438140906_smoothie-frutado-1.webp,1739438140906_healthy-shake-1.webp', 1000, '2025-02-13 17:15:41', '2025-02-13 17:15:41');
+INSERT INTO `products` VALUES (334, 'Cosmopolitan', '1', '我们制作了这款鸡尾酒，所以您不必这样做！这款纽约主食由真正的酸橙和蔓越莓汁制成，并用蓝色龙舌兰增甜，既新鲜又粉红色。', 5.00, 18, '1739438382327_Loverboy-Cosmo-FOP-WaterCan-R2_png_540x671.webp', 1000, '2025-02-13 17:19:42', '2025-02-13 17:19:42');
+INSERT INTO `products` VALUES (335, 'Cosmopolitan', '1', '我们制作了这款鸡尾酒，所以您不必这样做！这款纽约主食由真正的酸橙和蔓越莓汁制成，并用蓝色龙舌兰增甜，既新鲜又粉红色。', 5.00, 18, '1739438399565_Loverboy_Spritz_250mlSlimlineCan_Sangria-FOP-R1_2_400x400.webp', 1000, '2025-02-13 17:20:00', '2025-02-13 17:20:00');
+INSERT INTO `products` VALUES (336, 'Cosmopolitan', '1', '我们制作了这款鸡尾酒，所以您不必这样做！这款纽约主食由真正的酸橙和蔓越莓汁制成，并用蓝色龙舌兰增甜，既新鲜又粉红色。', 5.00, 18, '1739438408306_Loverboy-Espresso-FOP-WaterCan-R2_3dc26fe0-6c86-4a42-a092-bb62487b833f_400x400.webp', 1000, '2025-02-13 17:20:08', '2025-02-13 17:20:08');
+INSERT INTO `products` VALUES (337, 'Cosmopolitan', '1', '我们制作了这款鸡尾酒，所以您不必这样做！这款纽约主食由真正的酸橙和蔓越莓汁制成，并用蓝色龙舌兰增甜，既新鲜又粉红色。', 5.00, 18, '1739438546940_Loverboy_Spritz_250mlSlimlineCan_Sangria-FOP-R1_2_540x793.webp', 1000, '2025-02-13 17:22:27', '2025-02-13 17:22:27');
+INSERT INTO `products` VALUES (338, 'Cosmopolitan', '1', '我们制作了这款鸡尾酒，所以您不必这样做！这款纽约主食由真正的酸橙和蔓越莓汁制成，并用蓝色龙舌兰增甜，既新鲜又粉红色。', 5.00, 18, '1739438553394_Loverboy_Spritz_250mlSlimlineCan_Limoncello-FOP_540x793.webp', 1000, '2025-02-13 17:22:33', '2025-02-13 17:22:33');
+INSERT INTO `products` VALUES (339, 'Cosmopolitan', '1', '我们制作了这款鸡尾酒，所以您不必这样做！这款纽约主食由真正的酸橙和蔓越莓汁制成，并用蓝色龙舌兰增甜，既新鲜又粉红色。', 5.00, 18, '1739438558461_Loverboy_Spritz_250mlSlimlineCan_Pear-FOP_540x793.webp', 1000, '2025-02-13 17:22:38', '2025-02-13 17:22:38');
+INSERT INTO `products` VALUES (340, 'Cosmopolitan', '1', '我们制作了这款鸡尾酒，所以您不必这样做！这款纽约主食由真正的酸橙和蔓越莓汁制成，并用蓝色龙舌兰增甜，既新鲜又粉红色。', 5.00, 18, '1739438561179_Loverboy_Spritz_250mlSlimlineCan_Blueberry-FOP_540x793.webp', 1000, '2025-02-13 17:22:41', '2025-02-13 17:22:41');
+INSERT INTO `products` VALUES (341, 'Cosmopolitan', '1', '我们制作了这款鸡尾酒，所以您不必这样做！这款纽约主食由真正的酸橙和蔓越莓汁制成，并用蓝色龙舌兰增甜，既新鲜又粉红色。', 5.00, 18, '1739438564164_Loverboy_Spritz_250mlSlimlineCan_PassionFruit-FOP_540x793.webp', 1000, '2025-02-13 17:22:44', '2025-02-13 17:22:44');
+INSERT INTO `products` VALUES (342, 'Cosmopolitan', '1', '我们制作了这款鸡尾酒，所以您不必这样做！这款纽约主食由真正的酸橙和蔓越莓汁制成，并用蓝色龙舌兰增甜，既新鲜又粉红色。', 5.00, 18, '1739438567649_Loverboy_Spritz_250mlSlimlineCan_Mango-FOP_540x793.webp', 1000, '2025-02-13 17:22:48', '2025-02-13 17:22:48');
+INSERT INTO `products` VALUES (343, 'Cosmopolitan', '1', '我们制作了这款鸡尾酒，所以您不必这样做！这款纽约主食由真正的酸橙和蔓越莓汁制成，并用蓝色龙舌兰增甜，既新鲜又粉红色。', 5.00, 18, '1739438571020_Loverboy-Cosmo-FOP-WaterCan-R2_png_540x671.webp', 1000, '2025-02-13 17:22:51', '2025-02-13 17:22:51');
+INSERT INTO `products` VALUES (344, 'Cosmopolitan', '1', '我们制作了这款鸡尾酒，所以您不必这样做！这款纽约主食由真正的酸橙和蔓越莓汁制成，并用蓝色龙舌兰增甜，既新鲜又粉红色。', 5.00, 18, '1739438573898_Loverboy-Espresso-FOP-WaterCan-R2_540x671.webp', 1000, '2025-02-13 17:22:54', '2025-02-13 17:22:54');
+INSERT INTO `products` VALUES (345, 'Cosmopolitan', '1', '我们制作了这款鸡尾酒，所以您不必这样做！这款纽约主食由真正的酸橙和蔓越莓汁制成，并用蓝色龙舌兰增甜，既新鲜又粉红色。', 40.00, 18, '1739438579820_Loverboy-bundle_400x400.webp', 1000, '2025-02-13 17:23:00', '2025-02-13 17:23:00');
+INSERT INTO `products` VALUES (346, 'Cosmopolitan', '1', '我们制作了这款鸡尾酒，所以您不必这样做！这款纽约主食由真正的酸橙和蔓越莓汁制成，并用蓝色龙舌兰增甜，既新鲜又粉红色。', 13.00, 18, '1739438681158_Loverboy_Spritz_250mlSlimlineCan_Variety_540x793.webp', 1000, '2025-02-13 17:24:41', '2025-02-13 17:24:41');
+INSERT INTO `products` VALUES (347, 'San Marcos', 'San Marcos', '这款单一产地是公平贸易、雨林联盟认证、中度烘焙和 100% 阿拉比卡咖啡。这种咖啡在危地马拉的圣马科斯地区可持续种植。咖啡豆的特点是温和的果香，余味浓郁饱满。', 12.00, 22, '1739439322038_Marcos_voorkant-347x700.png', 1000, '2025-02-13 17:35:22', '2025-02-13 17:35:22');
+INSERT INTO `products` VALUES (348, 'Nero', 'Nero', '我们每个人的朋友！这种混合物是公平贸易、深度烘焙和 100% 阿拉比卡咖啡。咖啡部分来自危地马拉圣马科斯的火山高地，部分来自巴西桑托斯地区。由于配方均衡，Nero 可以根据每个人的口味调色板进行定制;这很好。', 12.00, 22, '1739439396733_Nero_voorkant-354x700.png', 1000, '2025-02-13 17:36:37', '2025-02-13 17:36:37');
+INSERT INTO `products` VALUES (349, 'Santos Tenango', 'Santos Tenango', '这种混合物是公平贸易、深度烘焙和 100% 阿拉比卡咖啡。部分来自巴西的桑托斯地区，部分来自危地马拉的 Huehuetenango 地区。通过将这两种咖啡和额外的深度烘焙混合。咖啡豆的特点是浓郁、辛辣的味道。对于敢于尝试的咖啡爱好者来说！', 12.00, 22, '1739439440455_Santos_voorkant-357x700.png', 1000, '2025-02-13 17:37:20', '2025-02-13 17:37:20');
+INSERT INTO `products` VALUES (350, 'Santos Tenango', 'Santos Tenango', '这种混合物是公平贸易、深度烘焙和 100% 阿拉比卡咖啡。部分来自巴西的桑托斯地区，部分来自危地马拉的 Huehuetenango 地区。通过将这两种咖啡和额外的深度烘焙混合。咖啡豆的特点是浓郁、辛辣的味道。对于敢于尝试的咖啡爱好者来说！', 12.00, 22, '1739439444618_Decaf_voorkant-354x700.png', 1000, '2025-02-13 17:37:25', '2025-02-13 17:37:25');
+INSERT INTO `products` VALUES (351, 'Santos Tenango', 'Santos Tenango', '这种混合物是公平贸易、深度烘焙和 100% 阿拉比卡咖啡。部分来自巴西的桑托斯地区，部分来自危地马拉的 Huehuetenango 地区。通过将这两种咖啡和额外的深度烘焙混合。咖啡豆的特点是浓郁、辛辣的味道。对于敢于尝试的咖啡爱好者来说！', 12.00, 22, '1739439449885_Plantanillo_voorkant-347x700.png', 1000, '2025-02-13 17:37:30', '2025-02-13 17:37:30');
+INSERT INTO `products` VALUES (352, 'Santos Tenango', 'Santos Tenango', '这种混合物是公平贸易、深度烘焙和 100% 阿拉比卡咖啡。部分来自巴西的桑托斯地区，部分来自危地马拉的 Huehuetenango 地区。通过将这两种咖啡和额外的深度烘焙混合。咖啡豆的特点是浓郁、辛辣的味道。对于敢于尝试的咖啡爱好者来说！', 12.00, 22, '1739439453186_Peru_voorkant-351x700.png', 1000, '2025-02-13 17:37:33', '2025-02-13 17:37:33');
+INSERT INTO `products` VALUES (353, 'Potato chicche with spinach', 'Potato chicche with spinach', 'Nonna Rina 土豆和菠菜鸡片非常适合最后一刻的午餐，也适合家庭聚会。它们只需 2 分钟即可准备好，而且味道总是很好，无论是搭配简单的调味品还是更精致的酱汁，如海鲜或奶酪。每天获得灵感，尝试如此多的食谱。', 12.00, 23, '1739440235473_S_img-ombra.webp', 1000, '2025-02-13 17:50:35', '2025-02-13 17:50:35');
+INSERT INTO `products` VALUES (354, 'Potato chicche with spinach', 'Potato chicche with spinach', 'Nonna Rina 土豆和菠菜鸡片非常适合最后一刻的午餐，也适合家庭聚会。它们只需 2 分钟即可准备好，而且味道总是很好，无论是搭配简单的调味品还是更精致的酱汁，如海鲜或奶酪。每天获得灵感，尝试如此多的食谱。', 12.00, 23, '1739440267121_S_img-ombra.webp', 1000, '2025-02-13 17:51:07', '2025-02-13 17:51:07');
+INSERT INTO `products` VALUES (355, 'Potato chicche with spinach', 'Potato chicche with spinach', 'Nonna Rina 土豆和菠菜鸡片非常适合最后一刻的午餐，也适合家庭聚会。它们只需 2 分钟即可准备好，而且味道总是很好，无论是搭配简单的调味品还是更精致的酱汁，如海鲜或奶酪。每天获得灵感，尝试如此多的食谱。', 12.00, 23, '1739440291775_S_img-ombra.webp', 1000, '2025-02-13 17:51:32', '2025-02-13 17:51:32');
 
 -- ----------------------------
 -- Table structure for reviews
 -- ----------------------------
 DROP TABLE IF EXISTS `reviews`;
 CREATE TABLE `reviews`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '评价ID',
-  `user_id` int(11) NOT NULL COMMENT '用户ID',
-  `product_id` int(11) NOT NULL COMMENT '商品ID',
-  `rating` int(11) NOT NULL COMMENT '星级 1-5',
-  `content` text CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT '评价内容',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '评价ID',
+  `user_id` int NOT NULL COMMENT '用户ID',
+  `product_id` int NOT NULL COMMENT '商品ID',
+  `rating` int NOT NULL COMMENT '星级 1-5',
+  `content` text CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL COMMENT '评价内容',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `user_id`(`user_id`) USING BTREE,
-  INDEX `product_id`(`product_id`) USING BTREE,
+  INDEX `user_id`(`user_id` ASC) USING BTREE,
+  INDEX `product_id`(`product_id` ASC) USING BTREE,
   CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 76 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of reviews
 -- ----------------------------
-INSERT INTO `reviews` VALUES (4, 8, 101, 5, '你好', '2025-02-09 18:06:18');
-INSERT INTO `reviews` VALUES (5, 9, 101, 5, '你好', '2025-02-09 18:11:45');
-INSERT INTO `reviews` VALUES (6, 8, 101, 5, '你好', '2025-02-09 18:11:51');
+INSERT INTO `reviews` VALUES (40, 42, 240, 2, 'Navicat authorizes you                  ', '2016-05-22 00:16:06');
+INSERT INTO `reviews` VALUES (41, 82, 66, 4, 'After comparing data,                   ', '2021-09-26 10:51:25');
+INSERT INTO `reviews` VALUES (42, 50, 37, 3, 'SSH serves to prevent                   ', '2016-07-20 00:47:48');
+INSERT INTO `reviews` VALUES (43, 41, 140, 3, 'The reason why a great                  ', '2018-10-01 11:48:51');
+INSERT INTO `reviews` VALUES (44, 82, 268, 2, 'After logged in the Navicat             ', '2021-09-13 23:51:26');
+INSERT INTO `reviews` VALUES (45, 41, 299, 4, 'If opportunity doesn’t                ', '2021-05-28 16:45:08');
+INSERT INTO `reviews` VALUES (46, 56, 205, 4, 'Navicat provides powerful               ', '2009-04-30 15:25:34');
+INSERT INTO `reviews` VALUES (47, 86, 262, 1, 'After comparing data,                   ', '2006-10-09 18:28:28');
+INSERT INTO `reviews` VALUES (48, 56, 145, 3, 'How we spend our days                   ', '2011-12-04 23:13:21');
+INSERT INTO `reviews` VALUES (49, 70, 23, 4, 'Navicat Data Modeler                    ', '2010-11-18 01:28:16');
+INSERT INTO `reviews` VALUES (50, 49, 240, 1, 'Champions keep playing                  ', '2014-06-10 20:35:24');
+INSERT INTO `reviews` VALUES (51, 30, 163, 2, 'In the middle of winter                 ', '2021-07-12 09:53:44');
+INSERT INTO `reviews` VALUES (52, 27, 206, 5, 'If your Internet Service                ', '2001-06-02 10:52:48');
+INSERT INTO `reviews` VALUES (53, 76, 280, 2, 'The On Startup feature                  ', '2011-05-07 10:49:11');
+INSERT INTO `reviews` VALUES (54, 62, 260, 4, 'Navicat Cloud provides                  ', '2009-04-04 04:50:30');
+INSERT INTO `reviews` VALUES (55, 57, 202, 5, 'Navicat Data Modeler                    ', '2013-11-11 16:21:27');
+INSERT INTO `reviews` VALUES (56, 74, 55, 0, 'Difficult circumstances                 ', '2001-02-25 03:13:22');
+INSERT INTO `reviews` VALUES (57, 83, 25, 4, 'To successfully establish               ', '2008-11-24 11:38:35');
+INSERT INTO `reviews` VALUES (58, 30, 305, 4, 'It collects process metrics             ', '2000-07-12 11:22:26');
+INSERT INTO `reviews` VALUES (59, 104, 83, 3, 'It provides strong authentication       ', '2000-08-28 16:23:28');
+INSERT INTO `reviews` VALUES (60, 20, 290, 2, 'You can select any connections,         ', '2005-02-18 09:04:21');
+INSERT INTO `reviews` VALUES (61, 80, 209, 4, 'The Synchronize to Database             ', '2003-12-11 23:55:24');
+INSERT INTO `reviews` VALUES (62, 86, 246, 2, 'Difficult circumstances                 ', '2003-03-17 02:57:23');
+INSERT INTO `reviews` VALUES (63, 72, 295, 0, 'You will succeed because                ', '2013-07-20 19:32:32');
+INSERT INTO `reviews` VALUES (64, 15, 109, 2, 'The Navigation pane employs             ', '2012-02-03 02:35:08');
+INSERT INTO `reviews` VALUES (65, 36, 250, 3, 'If it scares you, it                    ', '2011-10-13 05:58:49');
+INSERT INTO `reviews` VALUES (66, 40, 126, 1, 'To open a query using                   ', '2009-10-28 01:59:49');
+INSERT INTO `reviews` VALUES (67, 14, 200, 5, '你好', '2025-02-11 17:52:34');
+INSERT INTO `reviews` VALUES (68, 14, 200, 5, '你好', '2025-02-11 17:52:34');
+INSERT INTO `reviews` VALUES (69, 14, 200, 5, '你好', '2025-02-11 17:52:35');
+INSERT INTO `reviews` VALUES (70, 14, 200, 5, '你好', '2025-02-11 17:52:36');
+INSERT INTO `reviews` VALUES (71, 14, 200, 5, '你好', '2025-02-11 17:52:36');
+INSERT INTO `reviews` VALUES (72, 14, 200, 5, '你好', '2025-02-11 17:52:37');
+INSERT INTO `reviews` VALUES (73, 14, 200, 5, '你好', '2025-02-11 17:52:37');
+INSERT INTO `reviews` VALUES (74, 14, 200, 5, '你好', '2025-02-11 17:52:38');
+INSERT INTO `reviews` VALUES (75, 14, 200, 5, '你好', '2025-02-11 17:52:39');
 
 -- ----------------------------
 -- Table structure for sales_stats
 -- ----------------------------
 DROP TABLE IF EXISTS `sales_stats`;
 CREATE TABLE `sales_stats`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '销售统计ID',
-  `product_id` int(11) NOT NULL COMMENT '商品ID',
-  `user_id` int(11) NOT NULL COMMENT '用户ID',
-  `quantity_sold` int(11) NOT NULL COMMENT '售出数量',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '销售统计ID',
+  `product_id` int NOT NULL COMMENT '商品ID',
+  `user_id` int NOT NULL COMMENT '用户ID',
+  `quantity_sold` int NOT NULL COMMENT '售出数量',
   `total_revenue` decimal(10, 2) NOT NULL COMMENT ' 总收入',
   `sold_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '售出时间  ',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `product_id`(`product_id`) USING BTREE,
-  INDEX `user_id`(`user_id`) USING BTREE,
+  INDEX `product_id`(`product_id` ASC) USING BTREE,
+  INDEX `user_id`(`user_id` ASC) USING BTREE,
   CONSTRAINT `sales_stats_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `sales_stats_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 108 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sales_stats
 -- ----------------------------
 INSERT INTO `sales_stats` VALUES (2, 123, 14, 10, 150.00, '2025-02-10 13:13:03');
+INSERT INTO `sales_stats` VALUES (3, 120, 14, 10, 150.00, '2025-02-11 19:35:02');
+INSERT INTO `sales_stats` VALUES (4, 110, 14, 10, 110.00, '2025-02-11 19:35:10');
+INSERT INTO `sales_stats` VALUES (5, 111, 14, 10, 100.00, '2025-02-11 19:35:22');
+INSERT INTO `sales_stats` VALUES (6, 119, 58, 4, 27.77, '2025-02-11 09:57:25');
+INSERT INTO `sales_stats` VALUES (7, 72, 30, 9, 90.37, '2025-02-10 11:42:17');
+INSERT INTO `sales_stats` VALUES (8, 277, 34, 4, 17.83, '2025-02-11 13:06:06');
+INSERT INTO `sales_stats` VALUES (9, 98, 62, 5, 65.79, '2025-02-09 02:13:40');
+INSERT INTO `sales_stats` VALUES (10, 187, 27, 8, 64.75, '2025-02-10 22:55:28');
+INSERT INTO `sales_stats` VALUES (11, 268, 73, 4, 14.88, '2025-02-11 07:44:30');
+INSERT INTO `sales_stats` VALUES (12, 19, 28, 9, 84.78, '2025-02-11 22:04:42');
+INSERT INTO `sales_stats` VALUES (13, 130, 22, 1, 7.83, '2025-02-11 11:37:23');
+INSERT INTO `sales_stats` VALUES (14, 137, 24, 8, 80.19, '2025-02-10 05:04:13');
+INSERT INTO `sales_stats` VALUES (15, 307, 75, 3, 29.40, '2025-02-10 13:32:15');
+INSERT INTO `sales_stats` VALUES (16, 220, 15, 4, 13.80, '2025-02-11 03:01:36');
+INSERT INTO `sales_stats` VALUES (17, 118, 65, 6, 81.27, '2025-02-11 22:11:20');
+INSERT INTO `sales_stats` VALUES (18, 205, 73, 6, 60.02, '2025-02-11 16:57:04');
+INSERT INTO `sales_stats` VALUES (19, 46, 56, 9, 83.30, '2025-02-10 20:49:41');
+INSERT INTO `sales_stats` VALUES (20, 26, 85, 3, 1.26, '2025-02-09 02:34:10');
+INSERT INTO `sales_stats` VALUES (21, 36, 87, 9, 90.15, '2025-02-10 14:21:05');
+INSERT INTO `sales_stats` VALUES (22, 19, 99, 8, 57.66, '2025-02-10 18:48:05');
+INSERT INTO `sales_stats` VALUES (23, 72, 103, 6, 14.25, '2025-02-09 05:41:18');
+INSERT INTO `sales_stats` VALUES (24, 13, 18, 3, 68.59, '2025-02-11 08:08:51');
+INSERT INTO `sales_stats` VALUES (25, 57, 46, 6, 66.14, '2025-02-09 23:45:45');
+INSERT INTO `sales_stats` VALUES (26, 161, 51, 2, 83.57, '2025-02-09 06:16:47');
+INSERT INTO `sales_stats` VALUES (27, 139, 70, 9, 93.42, '2025-02-09 06:16:55');
+INSERT INTO `sales_stats` VALUES (28, 280, 97, 5, 60.09, '2025-02-09 02:05:16');
+INSERT INTO `sales_stats` VALUES (29, 210, 72, 4, 30.74, '2025-02-10 18:58:06');
+INSERT INTO `sales_stats` VALUES (30, 187, 25, 7, 15.60, '2025-02-11 19:19:09');
+INSERT INTO `sales_stats` VALUES (31, 294, 37, 3, 33.11, '2025-02-09 10:47:53');
+INSERT INTO `sales_stats` VALUES (32, 180, 10, 4, 72.76, '2025-02-09 14:53:34');
+INSERT INTO `sales_stats` VALUES (33, 220, 88, 7, 1.08, '2025-02-11 07:51:39');
+INSERT INTO `sales_stats` VALUES (34, 150, 16, 2, 41.33, '2025-02-09 10:36:35');
+INSERT INTO `sales_stats` VALUES (35, 278, 77, 8, 65.93, '2025-02-10 22:19:41');
+INSERT INTO `sales_stats` VALUES (36, 92, 103, 10, 51.32, '2025-02-09 12:57:05');
+INSERT INTO `sales_stats` VALUES (37, 67, 56, 3, 74.95, '2025-02-10 02:55:44');
+INSERT INTO `sales_stats` VALUES (38, 223, 89, 7, 21.79, '2025-02-11 20:56:48');
+INSERT INTO `sales_stats` VALUES (39, 107, 94, 7, 51.15, '2025-02-10 06:39:36');
+INSERT INTO `sales_stats` VALUES (40, 5, 63, 3, 34.65, '2025-02-11 21:40:14');
+INSERT INTO `sales_stats` VALUES (41, 271, 37, 2, 42.69, '2025-02-11 15:52:02');
+INSERT INTO `sales_stats` VALUES (42, 267, 94, 5, 75.93, '2025-02-09 15:23:44');
+INSERT INTO `sales_stats` VALUES (43, 194, 97, 2, 19.20, '2025-02-09 12:47:30');
+INSERT INTO `sales_stats` VALUES (44, 158, 86, 7, 40.34, '2025-02-09 18:47:54');
+INSERT INTO `sales_stats` VALUES (45, 227, 23, 4, 61.82, '2025-02-09 08:45:11');
+INSERT INTO `sales_stats` VALUES (46, 60, 40, 6, 78.74, '2025-02-10 22:35:45');
+INSERT INTO `sales_stats` VALUES (48, 238, 14, 10, 74.49, '2025-02-09 16:47:34');
+INSERT INTO `sales_stats` VALUES (49, 196, 108, 5, 38.80, '2025-02-09 14:00:28');
+INSERT INTO `sales_stats` VALUES (50, 213, 30, 6, 40.96, '2025-02-10 00:32:08');
+INSERT INTO `sales_stats` VALUES (51, 209, 72, 1, 52.85, '2025-02-11 18:46:07');
+INSERT INTO `sales_stats` VALUES (52, 10, 40, 9, 19.66, '2025-02-09 22:39:45');
+INSERT INTO `sales_stats` VALUES (53, 39, 34, 3, 71.95, '2025-02-10 00:37:23');
+INSERT INTO `sales_stats` VALUES (54, 101, 81, 5, 53.71, '2025-02-09 02:11:18');
+INSERT INTO `sales_stats` VALUES (55, 259, 76, 5, 4.71, '2025-02-09 19:58:25');
+INSERT INTO `sales_stats` VALUES (56, 154, 23, 6, 67.30, '2025-02-10 04:25:17');
+INSERT INTO `sales_stats` VALUES (57, 260, 96, 6, 63.46, '2025-02-10 07:18:45');
+INSERT INTO `sales_stats` VALUES (58, 155, 78, 6, 26.58, '2025-02-09 12:04:35');
+INSERT INTO `sales_stats` VALUES (59, 194, 97, 1, 2.74, '2025-02-10 05:53:43');
+INSERT INTO `sales_stats` VALUES (60, 254, 75, 6, 97.81, '2025-02-11 11:41:59');
+INSERT INTO `sales_stats` VALUES (61, 26, 54, 9, 60.73, '2025-02-11 06:24:50');
+INSERT INTO `sales_stats` VALUES (62, 70, 89, 2, 71.22, '2025-02-10 05:23:42');
+INSERT INTO `sales_stats` VALUES (63, 224, 32, 5, 34.68, '2025-02-09 13:58:06');
+INSERT INTO `sales_stats` VALUES (64, 39, 74, 3, 87.28, '2025-02-09 15:19:00');
+INSERT INTO `sales_stats` VALUES (65, 226, 25, 5, 90.31, '2025-02-10 18:41:31');
+INSERT INTO `sales_stats` VALUES (66, 282, 33, 9, 45.81, '2025-02-10 17:58:47');
+INSERT INTO `sales_stats` VALUES (67, 83, 69, 9, 6.24, '2025-02-11 10:19:53');
+INSERT INTO `sales_stats` VALUES (68, 276, 19, 2, 49.57, '2025-02-10 04:34:26');
+INSERT INTO `sales_stats` VALUES (69, 245, 75, 10, 92.12, '2025-02-10 09:11:33');
+INSERT INTO `sales_stats` VALUES (70, 123, 52, 4, 2.63, '2025-02-10 05:38:22');
+INSERT INTO `sales_stats` VALUES (71, 33, 83, 7, 49.17, '2025-02-11 16:12:45');
+INSERT INTO `sales_stats` VALUES (72, 297, 86, 1, 79.78, '2025-02-11 19:36:06');
+INSERT INTO `sales_stats` VALUES (73, 213, 69, 6, 43.53, '2025-02-11 18:04:42');
+INSERT INTO `sales_stats` VALUES (74, 218, 33, 5, 28.95, '2025-02-09 00:35:41');
+INSERT INTO `sales_stats` VALUES (75, 77, 40, 6, 45.58, '2025-02-10 10:01:42');
+INSERT INTO `sales_stats` VALUES (76, 88, 81, 6, 17.59, '2025-02-11 14:47:50');
+INSERT INTO `sales_stats` VALUES (77, 205, 52, 9, 27.26, '2025-02-10 19:49:05');
+INSERT INTO `sales_stats` VALUES (78, 227, 19, 7, 73.84, '2025-02-09 05:59:14');
+INSERT INTO `sales_stats` VALUES (79, 63, 105, 10, 34.13, '2025-02-10 09:16:17');
+INSERT INTO `sales_stats` VALUES (80, 227, 99, 4, 28.36, '2025-02-10 22:46:47');
+INSERT INTO `sales_stats` VALUES (81, 272, 46, 2, 64.97, '2025-02-10 02:03:26');
+INSERT INTO `sales_stats` VALUES (82, 91, 97, 6, 70.84, '2025-02-10 00:26:57');
+INSERT INTO `sales_stats` VALUES (83, 83, 35, 5, 20.33, '2025-02-09 03:54:30');
+INSERT INTO `sales_stats` VALUES (84, 156, 26, 4, 98.06, '2025-02-09 11:33:21');
+INSERT INTO `sales_stats` VALUES (85, 36, 87, 7, 78.20, '2025-02-10 13:30:11');
+INSERT INTO `sales_stats` VALUES (86, 6, 58, 2, 11.13, '2025-02-10 21:37:45');
+INSERT INTO `sales_stats` VALUES (87, 260, 102, 2, 89.88, '2025-02-10 20:07:50');
+INSERT INTO `sales_stats` VALUES (88, 160, 42, 2, 9.00, '2025-02-10 15:10:44');
+INSERT INTO `sales_stats` VALUES (89, 303, 63, 10, 100.00, '2025-02-10 14:28:20');
+INSERT INTO `sales_stats` VALUES (90, 303, 108, 60, 700.00, '2025-02-10 05:39:20');
+INSERT INTO `sales_stats` VALUES (91, 222, 36, 100, 740.17, '2025-02-11 17:44:58');
+INSERT INTO `sales_stats` VALUES (92, 43, 39, 4, 14.92, '2025-02-11 10:11:42');
+INSERT INTO `sales_stats` VALUES (93, 192, 36, 4, 70.64, '2025-02-11 15:01:34');
+INSERT INTO `sales_stats` VALUES (94, 70, 32, 10, 81.62, '2025-02-09 15:02:18');
+INSERT INTO `sales_stats` VALUES (95, 205, 73, 8, 34.75, '2025-02-09 18:52:47');
+INSERT INTO `sales_stats` VALUES (96, 164, 66, 4, 46.86, '2025-02-09 23:50:54');
+INSERT INTO `sales_stats` VALUES (97, 212, 106, 2, 79.96, '2025-02-09 18:29:30');
+INSERT INTO `sales_stats` VALUES (98, 172, 68, 5, 27.64, '2025-02-10 23:20:33');
+INSERT INTO `sales_stats` VALUES (99, 188, 50, 3, 43.00, '2025-02-09 01:08:24');
+INSERT INTO `sales_stats` VALUES (100, 95, 37, 6, 73.51, '2025-02-11 21:01:48');
+INSERT INTO `sales_stats` VALUES (101, 154, 10, 6, 72.31, '2025-02-11 09:13:45');
+INSERT INTO `sales_stats` VALUES (102, 216, 108, 9, 12.32, '2025-02-09 13:59:23');
+INSERT INTO `sales_stats` VALUES (103, 253, 38, 1, 23.68, '2025-02-11 01:42:44');
+INSERT INTO `sales_stats` VALUES (105, 290, 105, 3, 79.73, '2025-02-09 02:46:55');
+INSERT INTO `sales_stats` VALUES (106, 111, 14, 10, 100.00, '2025-02-12 12:45:23');
+INSERT INTO `sales_stats` VALUES (107, 5, 14, 10, 100.00, '2025-02-12 13:15:44');
 
 -- ----------------------------
 -- Table structure for users
 -- ----------------------------
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '用户名',
-  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT ' 密码',
-  `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '邮箱',
-  `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '邮寄地址',
-  `phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '手机号',
-  `avatar` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '头像',
-  `role_id` int(11) NULL DEFAULT 0 COMMENT '角色ID 0是普通用户 1是管理员',
-  `is_member` int(11) NOT NULL COMMENT '是否为会员0否 1是',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `username` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '用户名',
+  `password` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT ' 密码',
+  `email` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '邮箱',
+  `address` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '邮寄地址',
+  `phone` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '手机号',
+  `avatar` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '头像',
+  `role_id` int NULL DEFAULT 0 COMMENT '角色ID 0是普通用户 1是管理员',
+  `is_member` int NOT NULL COMMENT '是否为会员0否 1是',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 110 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 111 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of users
@@ -846,5 +880,6 @@ INSERT INTO `users` VALUES (106, 'd08c02d9-2287-463c-8493-d12ef334f48f', '$2a$10
 INSERT INTO `users` VALUES (107, '3ba4b443-5bd1-46fe-8ed5-d9f2f3b5e28c', '$2a$10$u04H7u/jFP04iNm2ynIuSeL2wfuNoaiD9tZ5UpEf6TsPdRnJFEqKe', '', '', '', '1738998413620_photo_2024-03-27_13-20-37.jpg', 0, 0, '2025-02-08 15:06:54');
 INSERT INTO `users` VALUES (108, 'a3f23c4c-5b95-44a9-81e3-6c6f48b3f66b', '$2a$10$FF93OeGix44triUQ/9o5FuT3OwrrsFwUl0fSVbEqr2eePCsAbGqYW', '', '', '', '1738998415088_photo_2024-03-27_13-20-37.jpg', 0, 0, '2025-02-08 15:06:55');
 INSERT INTO `users` VALUES (109, '568841fe-55f0-48a5-afde-b22f48af6ddd', '$2a$10$JvMqwkK7Oki8P3u9EB2d3..XmN5LchT48hdovKhc5qsZIM/dUgObW', '', '', '', '1738998416716_photo_2024-03-27_13-20-37.jpg', 0, 0, '2025-02-08 15:06:57');
+INSERT INTO `users` VALUES (110, 'user01', '$2a$10$7yOBHOUhFabAi5f/ICB3nOTWHCaMK.tt.YZJjzm3yLNEOSP74Gfju', '', '', '', '1739358328171_photo_2024-03-27_13-20-37.jpg', 0, 0, '2025-02-12 19:05:28');
 
 SET FOREIGN_KEY_CHECKS = 1;

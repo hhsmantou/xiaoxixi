@@ -1,8 +1,6 @@
 package com.example.demo.domain.controller;
 
 
-
-
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,17 +12,21 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 import com.example.demo.common.Result;
 import com.example.demo.domain.entity.Products;
 import com.example.demo.domain.service.IProductsService;
+
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
- * @author 
+ * @author
  * @since 2025-01-19
  */
 @RestController
@@ -89,7 +91,8 @@ public class ProductsController {
 
         // 将文件名列表转换为字符串并设置为商品的封面
         products.setCover(String.join(",", fileNames));
-
+        products.setCreateTime(LocalDateTime.now());
+        products.setUpdateTime(LocalDateTime.now());
         // 保存商品信息
         boolean isSaved = productsService.addProduct(products);
         if (isSaved) {
@@ -98,6 +101,7 @@ public class ProductsController {
             return Result.error("商品信息保存失败");
         }
     }
+
     @PostMapping("/{id}/addImages")
     @ApiOperation(value = "根据商品ID新增图片", notes = "上传多张图片并与商品关联")
     public Result<String> addProductImages(@PathVariable Integer id, @RequestParam("files") MultipartFile[] files) {
@@ -140,6 +144,7 @@ public class ProductsController {
             return Result.error("图片删除失败");
         }
     }
+
     // 更新商品信息
     @PutMapping("/update")
     @ApiOperation(value = "更新商品信息", notes = "更新商品信息")
@@ -163,6 +168,7 @@ public class ProductsController {
             return Result.error("商品删除失败");
         }
     }
+
     @GetMapping("/page")
     @ApiOperation(value = "分页获取商品列表", notes = "分页获取商品列表")
     public Result<IPage<Products>> getProductsPage(
