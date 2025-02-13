@@ -1,10 +1,10 @@
-# 基于Web的校园百货零售网站设计与实现
+# 基于Web的校园百货零售网站设计与实现 后端项目
 
 <div align=center>
 	<img width="20%" src="./uploads/icon/favicon.png" alt="icon"/>
 </div>
 
-
+前端仓库: [基于Web的校园百货零售网站设计与实现 前端项目](https://github.com/xjuunn/beshe)
 
 ### 用户功能
 
