@@ -32,9 +32,6 @@ public class Cart implements Serializable {
     @ApiModelProperty("商品ID")
     private Integer productId;
 
-    @ApiModelProperty("商品信息")
-    private Products products;
-
     @ApiModelProperty("数量")
     private Integer quantity;
 
@@ -66,14 +63,6 @@ public class Cart implements Serializable {
         this.productId = productId;
     }
 
-    public Products getProducts() {
-        return products;
-    }
-
-    public void setProducts(Products products) {
-        this.products = products;
-    }
-
     public Integer getQuantity() {
         return quantity;
     }
@@ -96,7 +85,6 @@ public class Cart implements Serializable {
                 "id=" + id +
                 ", userId=" + userId +
                 ", productId=" + productId +
-                ", products=" + products +
                 ", quantity=" + quantity +
                 ", createTime=" + createTime +
                 '}';
