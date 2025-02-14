@@ -2,17 +2,19 @@ package com.example.demo.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
- * @author 
+ * @author
  * @since 2025-01-19
  */
 @ApiModel(value = "Cart对象", description = "")
@@ -21,7 +23,7 @@ public class Cart implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("购物车id")
-      @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     @ApiModelProperty("用户id")
@@ -29,6 +31,9 @@ public class Cart implements Serializable {
 
     @ApiModelProperty("商品ID")
     private Integer productId;
+
+    @ApiModelProperty("商品信息")
+    private Products products;
 
     @ApiModelProperty("数量")
     private Integer quantity;
@@ -61,6 +66,14 @@ public class Cart implements Serializable {
         this.productId = productId;
     }
 
+    public Products getProducts() {
+        return products;
+    }
+
+    public void setProducts(Products products) {
+        this.products = products;
+    }
+
     public Integer getQuantity() {
         return quantity;
     }
@@ -80,11 +93,12 @@ public class Cart implements Serializable {
     @Override
     public String toString() {
         return "Cart{" +
-        "id=" + id +
-        ", userId=" + userId +
-        ", productId=" + productId +
-        ", quantity=" + quantity +
-        ", createTime=" + createTime +
-        "}";
+                "id=" + id +
+                ", userId=" + userId +
+                ", productId=" + productId +
+                ", products=" + products +
+                ", quantity=" + quantity +
+                ", createTime=" + createTime +
+                '}';
     }
 }
