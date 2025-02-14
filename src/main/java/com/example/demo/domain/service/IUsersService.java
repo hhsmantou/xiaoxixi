@@ -28,6 +28,8 @@ public interface IUsersService extends IService<Users> {
     
     Users getUserByUsername(String username);
 
+    Users getUserByID(Long id);
+
     List<Users> selectUserList(Users user);
     // 批量删除用户
     boolean batchDeleteUsers(@Param("list") List<Long> ids);

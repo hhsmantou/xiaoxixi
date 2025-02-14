@@ -146,6 +146,26 @@ public class UsersController {
         return ResponseEntity.ok(Result.error("用户不存在"));
     }
 
+    @GetMapping("/user/{id}")
+    @ApiOperation(value = "获取用户信息", notes = "根据用户名获取用户详细信息")
+    public ResponseEntity<Result<Map<String, Object>>> getUserInfoByID(@PathVariable Long id) {
+        Users user = usersService.getUserByID(id);
+        if (user != null) {
+            Map<String, Object> userInfo = new HashMap<>();
+            userInfo.put("id", user.getId());
+            userInfo.put("username", user.getUsername());
+            userInfo.put("email", user.getEmail());
+            userInfo.put("address", user.getAddress());
+            userInfo.put("phone", user.getPhone());
+            userInfo.put("avatar", user.getAvatar());
+            userInfo.put("roleId", user.getRoleId());
+            userInfo.put("createTime", user.getCreateTime());
+
+            return ResponseEntity.ok(Result.success(userInfo));
+        }
+        return ResponseEntity.ok(Result.error("用户不存在"));
+    }
+
     @PutMapping("/update")
     @ApiOperation(value = "更新用户信息", notes = "更新用户的详细信息")
     public ResponseEntity<Result<Object>> updateUserInfo(@RequestBody Users user) {

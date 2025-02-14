@@ -8,30 +8,34 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.List;
+
 import org.springframework.transaction.annotation.Transactional;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
- * @author 
+ * @author
  * @since 2025-01-19
  */
 @Service
 public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements IUsersService {
-    
+
     private final BCryptPasswordEncoder passwordEncoder;
 
     public UsersServiceImpl(BCryptPasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
+
     @Autowired
     private UsersMapper usersMapper;
+
     @Override
     public boolean registerUser(Users userInfo) {
         if (existsByUsername(userInfo.getUsername())) {
@@ -44,13 +48,13 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         user.setRoleId(0); // 默认普通用户
         user.setIsMember(0);
         user.setCreateTime(LocalDateTime.now());
-        
+
         // 设置其他用户信息
-        user.setEmail(userInfo.getEmail());        
+        user.setEmail(userInfo.getEmail());
         user.setAddress(userInfo.getAddress());
         user.setPhone(userInfo.getPhone());
         user.setAvatar(userInfo.getAvatar());
-        
+
         return save(user);
     }
 
@@ -77,6 +81,11 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     }
 
     @Override
+    public Users getUserByID(Long id) {
+        return getOne(new QueryWrapper<Users>().eq("id", id));
+    }
+
+    @Override
     public List<Users> selectUserList(Users user) {
         return baseMapper.selectUserList(user);
     }
@@ -96,16 +105,19 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         }
         return false;
     }
+
     @Override
     public IPage<Users> getUsersPage(int pageNum, int pageSize, String username, String phone, String email, Integer roleId) {
         Page<Users> page = new Page<>(pageNum, pageSize);
         return usersMapper.selectUsersPage(page, username, phone, email, roleId);
     }
+
     @Override
     public boolean isUserMember(Integer userId) {
         Users user = usersMapper.selectById(userId);
         return user != null && Boolean.TRUE.equals(user.getIsMember());
     }
+
     @Override
     public boolean updateUserMembership(Integer userId, Integer isMember) {
         Users user = usersMapper.selectById(userId);
