@@ -11,7 +11,7 @@
  Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 13/02/2025 17:57:22
+ Date: 14/02/2025 22:57:03
 */
 
 SET NAMES utf8mb4;
@@ -32,20 +32,21 @@ CREATE TABLE `cart`  (
   INDEX `product_id`(`product_id` ASC) USING BTREE,
   CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 40 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cart
 -- ----------------------------
-INSERT INTO `cart` VALUES (6, 8, 101, 8, '2025-02-08 14:05:45');
-INSERT INTO `cart` VALUES (7, 14, 100, 2, '2025-02-09 16:40:51');
-INSERT INTO `cart` VALUES (8, 14, 100, 2, '2025-02-09 16:49:13');
-INSERT INTO `cart` VALUES (9, 14, 100, 2, '2025-02-09 16:49:15');
-INSERT INTO `cart` VALUES (10, 14, 100, 2, '2025-02-09 16:49:16');
-INSERT INTO `cart` VALUES (11, 14, 100, 2, '2025-02-09 16:49:17');
-INSERT INTO `cart` VALUES (12, 14, 100, 2, '2025-02-09 16:49:19');
-INSERT INTO `cart` VALUES (13, 14, 100, 2, '2025-02-09 16:49:20');
-INSERT INTO `cart` VALUES (14, 14, 100, 2, '2025-02-09 16:49:21');
+INSERT INTO `cart` VALUES (6, 8, 102, 8, '2025-02-08 14:05:45');
+INSERT INTO `cart` VALUES (7, 8, 100, 2, '2025-02-09 16:40:51');
+INSERT INTO `cart` VALUES (30, 14, 5, 3, '2025-02-14 22:39:24');
+INSERT INTO `cart` VALUES (31, 14, 355, 1, '2025-02-14 22:39:29');
+INSERT INTO `cart` VALUES (32, 14, 352, 1, '2025-02-14 22:39:33');
+INSERT INTO `cart` VALUES (33, 14, 138, 1, '2025-02-14 22:40:06');
+INSERT INTO `cart` VALUES (35, 14, 101, 1, '2025-02-14 22:40:21');
+INSERT INTO `cart` VALUES (36, 14, 95, 1, '2025-02-14 22:40:29');
+INSERT INTO `cart` VALUES (37, 14, 27, 1, '2025-02-14 22:40:50');
+INSERT INTO `cart` VALUES (38, 14, 7, 1, '2025-02-14 22:40:55');
 
 -- ----------------------------
 -- Table structure for categories
@@ -56,7 +57,7 @@ CREATE TABLE `categories`  (
   `name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '商品分类名',
   `sort` int NULL DEFAULT 0 COMMENT '排序字段',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of categories
@@ -68,7 +69,7 @@ INSERT INTO `categories` VALUES (5, '生活', 2);
 INSERT INTO `categories` VALUES (6, '电子', 2);
 INSERT INTO `categories` VALUES (7, '衣物', 2);
 INSERT INTO `categories` VALUES (23, '未命名', 10);
-INSERT INTO `categories` VALUES (24, '未命名', 1000);
+INSERT INTO `categories` VALUES (25, '未命名', 10);
 
 -- ----------------------------
 -- Table structure for limited_products
@@ -84,27 +85,15 @@ CREATE TABLE `limited_products`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `unique_product`(`product_id` ASC) USING BTREE,
   CONSTRAINT `fk_limited_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of limited_products
 -- ----------------------------
-INSERT INTO `limited_products` VALUES (5, 114, 5, 'monthly', '2025-02-12 12:54:09', '2025-03-12 12:54:09');
 INSERT INTO `limited_products` VALUES (7, 116, 4, 'monthly', '2025-02-12 13:02:43', '2025-03-12 13:02:43');
-INSERT INTO `limited_products` VALUES (8, 52, 5, 'daily', '2025-02-12 17:59:22', '2025-02-13 17:59:22');
-INSERT INTO `limited_products` VALUES (9, 144, 4, 'daily', '2025-02-12 18:00:07', '2025-02-13 18:00:07');
-INSERT INTO `limited_products` VALUES (10, 142, 3, 'daily', '2025-02-12 18:00:18', '2025-02-13 18:00:18');
-INSERT INTO `limited_products` VALUES (11, 152, 8, 'daily', '2025-02-12 18:00:28', '2025-02-13 18:00:28');
-INSERT INTO `limited_products` VALUES (12, 132, 11, 'daily', '2025-02-12 18:00:38', '2025-02-13 18:00:38');
-INSERT INTO `limited_products` VALUES (13, 135, 15, 'daily', '2025-02-12 18:00:48', '2025-02-13 18:00:48');
-INSERT INTO `limited_products` VALUES (14, 97, 4, 'daily', '2025-02-12 18:00:56', '2025-02-13 18:00:56');
-INSERT INTO `limited_products` VALUES (15, 93, 3, 'daily', '2025-02-12 18:01:09', '2025-02-13 18:01:09');
-INSERT INTO `limited_products` VALUES (16, 5, 1, 'daily', '2025-02-12 18:17:27', '2025-02-13 18:17:27');
-INSERT INTO `limited_products` VALUES (17, 313, 6, 'daily', '2025-02-13 17:52:25', '2025-02-14 17:52:25');
-INSERT INTO `limited_products` VALUES (18, 345, 2, 'daily', '2025-02-13 17:53:26', '2025-02-14 17:53:26');
-INSERT INTO `limited_products` VALUES (19, 312, 1, 'daily', '2025-02-13 17:54:07', '2025-02-14 17:54:07');
-INSERT INTO `limited_products` VALUES (20, 322, 1, 'daily', '2025-02-13 17:54:39', '2025-02-14 17:54:39');
-INSERT INTO `limited_products` VALUES (21, 319, 1, 'daily', '2025-02-13 17:55:08', '2025-02-14 17:55:08');
+INSERT INTO `limited_products` VALUES (22, 5, 4, 'monthly', '2025-02-14 22:42:54', '2025-03-14 22:42:54');
+INSERT INTO `limited_products` VALUES (23, 332, 1, 'monthly', '2025-02-14 22:43:05', '2025-03-14 22:43:05');
+INSERT INTO `limited_products` VALUES (24, 310, 2, 'monthly', '2025-02-14 22:43:21', '2025-03-14 22:43:21');
 
 -- ----------------------------
 -- Table structure for limited_purchases
@@ -145,7 +134,7 @@ CREATE TABLE `order_details`  (
   INDEX `product_id`(`product_id` ASC) USING BTREE,
   CONSTRAINT `order_details_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `order_details_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 194 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 209 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of order_details
@@ -154,6 +143,21 @@ INSERT INTO `order_details` VALUES (186, 47, 5, 2, 2.00, '2025-02-11 15:09:24');
 INSERT INTO `order_details` VALUES (187, 47, 6, 2, 2.00, '2025-02-11 15:09:24');
 INSERT INTO `order_details` VALUES (188, 47, 7, 2, 2.00, '2025-02-11 15:09:24');
 INSERT INTO `order_details` VALUES (189, 47, 8, 2, 2.00, '2025-02-11 15:09:24');
+INSERT INTO `order_details` VALUES (194, 79, 5, 2, 2.00, '2025-02-14 17:53:16');
+INSERT INTO `order_details` VALUES (195, 79, 6, 2, 2.00, '2025-02-14 17:53:16');
+INSERT INTO `order_details` VALUES (196, 79, 7, 2, 2.00, '2025-02-14 17:53:16');
+INSERT INTO `order_details` VALUES (197, 79, 8, 2, 2.00, '2025-02-14 17:53:16');
+INSERT INTO `order_details` VALUES (198, 80, 100, 3, 2.00, '2025-02-14 22:25:38');
+INSERT INTO `order_details` VALUES (199, 81, 100, 3, 2.00, '2025-02-14 22:29:15');
+INSERT INTO `order_details` VALUES (200, 82, 100, 3, 2.00, '2025-02-14 22:30:54');
+INSERT INTO `order_details` VALUES (201, 83, 8, 2, 2.00, '2025-02-14 22:31:00');
+INSERT INTO `order_details` VALUES (202, 84, 12, 1, 2.00, '2025-02-14 22:31:07');
+INSERT INTO `order_details` VALUES (203, 85, 100, 3, 2.00, '2025-02-14 22:31:23');
+INSERT INTO `order_details` VALUES (204, 86, 8, 1, 2.00, '2025-02-14 22:32:58');
+INSERT INTO `order_details` VALUES (205, 87, 8, 2, 2.00, '2025-02-14 22:33:03');
+INSERT INTO `order_details` VALUES (206, 88, 12, 1, 2.00, '2025-02-14 22:39:18');
+INSERT INTO `order_details` VALUES (207, 89, 114, 1, 2.00, '2025-02-14 22:48:32');
+INSERT INTO `order_details` VALUES (208, 90, 310, 24, 1000.00, '2025-02-14 22:49:38');
 
 -- ----------------------------
 -- Table structure for orders
@@ -169,7 +173,7 @@ CREATE TABLE `orders`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id`(`user_id` ASC) USING BTREE,
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 79 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 91 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of orders
@@ -206,6 +210,18 @@ INSERT INTO `orders` VALUES (75, 31, 1, 2.83, 112, '2025-02-10 18:42:36');
 INSERT INTO `orders` VALUES (76, 49, 3, 7.35, 135, '2025-02-11 11:06:30');
 INSERT INTO `orders` VALUES (77, 36, 5, 4.40, 288, '2025-02-10 11:44:43');
 INSERT INTO `orders` VALUES (78, 94, 1, 11.03, 244, '2025-02-11 15:48:18');
+INSERT INTO `orders` VALUES (79, 14, 0, 14.40, 6, '2025-02-14 17:53:16');
+INSERT INTO `orders` VALUES (80, 14, 1, 5.40, 14, '2025-02-14 22:25:38');
+INSERT INTO `orders` VALUES (81, 14, 1, 5.40, 14, '2025-02-14 22:29:16');
+INSERT INTO `orders` VALUES (82, 14, 1, 5.40, 14, '2025-02-14 22:30:54');
+INSERT INTO `orders` VALUES (83, 14, 1, 3.60, 15, '2025-02-14 22:31:01');
+INSERT INTO `orders` VALUES (84, 14, 1, 1.80, 18, '2025-02-14 22:31:08');
+INSERT INTO `orders` VALUES (85, 14, 1, 5.40, 14, '2025-02-14 22:31:23');
+INSERT INTO `orders` VALUES (86, 14, 1, 1.80, 26, '2025-02-14 22:32:58');
+INSERT INTO `orders` VALUES (87, 14, 1, 3.60, 15, '2025-02-14 22:33:04');
+INSERT INTO `orders` VALUES (88, 14, 1, 1.80, 18, '2025-02-14 22:39:19');
+INSERT INTO `orders` VALUES (89, 14, 1, 1.80, 34, '2025-02-14 22:48:33');
+INSERT INTO `orders` VALUES (90, 14, 1, 21600.00, 27, '2025-02-14 22:49:39');
 
 -- ----------------------------
 -- Table structure for products
@@ -337,7 +353,7 @@ INSERT INTO `products` VALUES (110, '可可岩', '', '马来西亚椰子冰淇�
 INSERT INTO `products` VALUES (111, '百香果芝士蛋糕', '', '芝士蛋糕冰淇淋配百香果大理石花纹。', 2.00, 104, '1738924917758_file-1610718319660.png', 2980, '2025-02-07 18:41:57', '2025-02-07 18:41:57');
 INSERT INTO `products` VALUES (112, '柠檬派', '', '我们将著名的食谱变成了令人难以置信的冰淇淋，以纪念它。', 2.00, 104, '1738924926705_file-1605796132277.png', 3000, '2025-02-07 18:42:06', '2025-02-07 18:42:06');
 INSERT INTO `products` VALUES (113, '马斯卡彭 & 浆果', '', '独家配方，意大利为 Lucciano\'s 制造，马斯卡彭奶酪与阿根廷巴塔哥尼亚的浆果漩涡相结合。', 2.00, 104, '1738924943512_file-1605796102869.png', 3000, '2025-02-07 18:42:23', '2025-02-07 18:42:23');
-INSERT INTO `products` VALUES (114, '樱桃香草', '', 'Vainilla 樱桃大理石花纹奶油冰淇淋。', 2.00, 104, '1738924958105_file-1610721193651.png', 3000, '2025-02-07 18:42:38', '2025-02-07 18:42:38');
+INSERT INTO `products` VALUES (114, '樱桃香草', '', 'Vainilla 樱桃大理石花纹奶油冰淇淋。', 2.00, 104, '1738924958105_file-1610721193651.png', 2999, '2025-02-07 18:42:38', '2025-02-07 18:42:38');
 INSERT INTO `products` VALUES (115, '开心果', '', '用西西里美食中最珍贵的食材之一制成的招牌风味。勃朗特和西西里岛最好的手弦琴的组合。', 2.00, 104, '1738924965359_file-1608320787259.png', 3000, '2025-02-07 18:42:45', '2025-02-07 18:42:45');
 INSERT INTO `products` VALUES (116, '白巧克力 Pistacchio Crock', '', '白巧克力奶油冰淇淋配松脆的意大利 pistacchio 大理石花纹。', 2.00, 104, '1738924978475_file-1610721356116.png', 3000, '2025-02-07 18:42:58', '2025-02-07 18:42:58');
 INSERT INTO `products` VALUES (117, 'SUPREME 榛子', '', '冰淇淋由顶级意大利纯榛子制成。', 2.00, 104, '1738924986464_file-1649365068727.png', 3000, '2025-02-07 18:43:06', '2025-02-07 18:43:06');
@@ -528,7 +544,7 @@ INSERT INTO `products` VALUES (304, 'Sharpty - 塑料挂架 - 成人衣物挂架
 INSERT INTO `products` VALUES (305, 'Sharpty - 塑料挂架 - 成人衣物挂架 - T恤，连衣裙，衣架和配件 - 缺口挂架，耐用且多功能的彩色衣物衣架（20包，白色）', '', 'Sharpty - 塑料挂架 - 成人衣物挂架 - T恤，连衣裙，衣架和配件 - 缺口挂架，耐用且多功能的彩色衣物衣架（20包，白色）', 2.00, 110, '1738934425226_71naMNm1qkL._AC_SL1500_.jpg,1738934425229_81JJAsHZpyL._AC_SL1500_.jpg,1738934425232_81inLyaZcfL._AC_SL1500_.jpg,1738934425235_81iSCLtuBOL._AC_SL1500_.jpg,1738934425239_71Mly4479hL._AC_SL1500_.jpg', 3000, '2025-02-07 21:20:25', '2025-02-07 21:20:25');
 INSERT INTO `products` VALUES (306, 'Sharpty - 塑料挂架 - 成人衣物挂架 - T恤，连衣裙，衣架和配件 - 缺口挂架，耐用且多功能的彩色衣物衣架（20包，白色）', '', 'Sharpty - 塑料挂架 - 成人衣物挂架 - T恤，连衣裙，衣架和配件 - 缺口挂架，耐用且多功能的彩色衣物衣架（20包，白色）', 2.00, 110, '1738934434363_71naMNm1qkL._AC_SL1500_.jpg,1738934434366_81JJAsHZpyL._AC_SL1500_.jpg,1738934434369_81inLyaZcfL._AC_SL1500_.jpg,1738934434371_81iSCLtuBOL._AC_SL1500_.jpg,1738934434375_71Mly4479hL._AC_SL1500_.jpg', 3000, '2025-02-07 21:20:34', '2025-02-07 21:20:34');
 INSERT INTO `products` VALUES (307, 'Sharpty - 塑料挂架 - 成人衣物挂架 - T恤，连衣裙，衣架和配件 - 缺口挂架，耐用且多功能的彩色衣物衣架（20包，白色）', '', '👚 最大化空间并保持整洁：Sharpty 塑料挂架设计成纤薄的外形，以充分利用您的衣柜空间，同时保持整洁有序！使用我们的高品质衣架可以节省时间，因为您可以轻松找到所需的衣服。 👚 耐用材料：采用增强塑料边缘和耐用材料制成，我们的衣架一定会提供完美的稳定性，以满足您的所有标准服装需求以及较重的外套或夹克！凭借其光滑的表面，无需担心衣服上的污垢、折痕或痕迹。 👚 嵌入式凹槽：这些多功能衣架非常适合制作服装，但也可用于其他配件，如领带、腰带、披肩、细带衬衫、背心、吊带衫，甚至女士内衣。这些防滑衣架配有缺口肩部，可将您的衣物牢固地固定到位。 👚 面料友好设计：我们的白色塑料衣架光滑、干净的表面对您的衣服很温和。没有粗糙或锋利的边缘可能会损坏或在您的衣服上留下不需要的折痕或痕迹。相信我们会为您的壁橱和橱柜提供最有价值的组织工具。 👚 无忧保修：我们提供 1 年全面保修。如果您因任何原因不满意，请告诉我们，我们将尽一切努力解决问题。依赖我们的优质衣架，让您的衣橱保持整洁！', 2.00, 110, '1738934467808_71naMNm1qkL._AC_SL1500_.jpg,1738934467811_71Mly4479hL._AC_SL1500_.jpg', 3000, '2025-02-07 21:21:07', '2025-02-07 21:21:07');
-INSERT INTO `products` VALUES (310, '重型挖掘铲斗', '20-24T 挖掘铲斗 1200mm 宽', '释放我们的重型挖掘桶的多功能性和耐用性，也被称为GP，通用，软糖，服务，标准或挖沟桶。  ‍  采用双半径设计、侧铣刀、无缝集成的头架。该铲斗将在最苛刻的环境中保持较高的结构完整性和作业现场效率。  ‍  所有标准铲斗均采用 400 级钢制成，可升级为 HARDOX 450 和双合金钢。挖沟斗的宽度有300毫米、450毫米、600毫米、900毫米、1200毫米和1500毫米。所有挖掘桶都预装了所有磨损部件齿、侧刀和磨损保护装置，以及用于直接安装和快速挂钩使用的销钉。  ‍  这伴随着我们的标准 5 年保修和免费维修套件（价值高达 2,090 美元），其中包括一整套备用齿（包括销和保持器）+ 侧刀（包括螺栓和螺母）。  ‍', 1000.00, 999, '1739428468093_1 (1).webp,1739428468095_1 (2).webp,1739428468095_1 (3).webp,1739428468096_1 (4).webp,1739428468097_1 (5).webp,1739428468098_1 (6).webp,1739428468098_1 (7).webp', 1000, '2025-02-13 14:34:28', '2025-02-13 14:34:28');
+INSERT INTO `products` VALUES (310, '重型挖掘铲斗', '20-24T 挖掘铲斗 1200mm 宽', '释放我们的重型挖掘桶的多功能性和耐用性，也被称为GP，通用，软糖，服务，标准或挖沟桶。  ‍  采用双半径设计、侧铣刀、无缝集成的头架。该铲斗将在最苛刻的环境中保持较高的结构完整性和作业现场效率。  ‍  所有标准铲斗均采用 400 级钢制成，可升级为 HARDOX 450 和双合金钢。挖沟斗的宽度有300毫米、450毫米、600毫米、900毫米、1200毫米和1500毫米。所有挖掘桶都预装了所有磨损部件齿、侧刀和磨损保护装置，以及用于直接安装和快速挂钩使用的销钉。  ‍  这伴随着我们的标准 5 年保修和免费维修套件（价值高达 2,090 美元），其中包括一整套备用齿（包括销和保持器）+ 侧刀（包括螺栓和螺母）。  ‍', 1000.00, 999, '1739428468093_1 (1).webp,1739428468095_1 (2).webp,1739428468095_1 (3).webp,1739428468096_1 (4).webp,1739428468097_1 (5).webp,1739428468098_1 (6).webp,1739428468098_1 (7).webp', 976, '2025-02-13 14:34:28', '2025-02-13 14:34:28');
 INSERT INTO `products` VALUES (311, '重型泥斗', '20-24T 泥斗 2000 毫米宽', '使用我们的重型泥斗（也称作铲斗、修整斗、平地斗、宽斗或清洁斗）可以高效地完成工作。 铲斗具有可翻转的栓接边缘、侧壁卡块、底板条、加固侧板和桁条，可有效防止磨损和扭转应力，从而将使用寿命延长一倍，减少不必要的停机时间。 ‍ 采用 400 级钢材制造，在高接触点上增加了 345 块耐磨板，也可根据要求定制钢材等级，包括 HARDOX 450 和 Bisalloy。所有泥斗都预装了所有耐磨部件和螺栓边缘，以及两个销钉，可直接安装和与快速接头一起使用。 ‍ 所有泥斗均提供标准的 5 年保修和免费维修包（RRP： 高达 2,200 美元），其中包括备用栓边、螺母和螺栓，因此所有客户均可在不增加额外费用的情况下最大限度地延长附件的使用寿命。', 1000.00, 999, '1739429104948_66b197dcfd072b5112f5ef09_Mud Bucket.webp,1739429104948_66b5712a3073da0bff80d827_ABMB - 10.webp,1739429104948_66b04d5d579de4c891b7d7ce_66838b19f70ca0a828c5eb96_ABMB-5.webp,1739429104948_66b04d5d579de4c891b7d7d0_66838b19f70ca0a828c5eb93_ABMB-4.webp,1739429104948_66b04d5d579de4c891b7d7d3_66838b19f70ca0a828c5eb9b_ABMB-3.webp,1739429104948_66b04d5d579de4c891b7d7cd_66838b19f70ca0a828c5eb90_ABMB-2.webp,1739429104948_66b04d5d579de4c891b7d7d2_66838b19f70ca0a828c5eb9e_ABMB-1.webp', 1000, '2025-02-13 14:45:05', '2025-02-13 14:45:05');
 INSERT INTO `products` VALUES (312, '重型岩石筛斗', '40-50T 重型岩石筛斗 1650mm 宽。', '使用我们的重型岩石筛分斗（业内也称为岩石振动筛、岩石筛分或岩石分离铲斗）解锁高级物料筛选技能。  ‍  拥有开放式设计、增强耐磨镀层、高穿透岩石齿、压缩缓解出口和侧刀，该桶可以轻松承受磨损和变形，同时在分类土壤、岩石和废物方面表现出色，具有增强的功能性和减少的循环时间。  ‍  从各种钢材中进行选择，包括：400 级钢、HARDOX 450 或双合金钢。所有岩石筛分斗都预装了所有齿和易损件，以及两个销钉，用于直接安装和快速铰链使用。  ‍  所有岩石筛分斗都配有我们的标准 5 年保修和免费维修套件（建议零售价高达 3,554 美元），其中包括一套备用的齿和侧刀（包括销、保持器、螺母和螺栓），因此所有客户都可以最大限度地延长其附件的使用寿命，而无需额外费用。', 1000.00, 999, '1739429252634_66b19871f851636464da548d_Rock Sieve Bucket-p-500.webp,1739429252634_66b576a14395fb47a1c9302e_ABRSB - 7.webp,1739429252636_66b04d5d579de4c891b7d7af_66838b19b37b631e714bff83_ABRSB-4.webp,1739429252637_66b04d5d579de4c891b7d7ac_66838b19b37b631e714bff7a_ABRSB-3.webp,1739429252638_66b04d5d579de4c891b7d7ad_66838b19b37b631e714bff7e_ABRSB-2.webp,1739429252638_66b04d5d579de4c891b7d7aa_66838b19b37b631e714bff76_ABRSB-1.webp', 1000, '2025-02-13 14:47:33', '2025-02-13 14:47:33');
 INSERT INTO `products` VALUES (313, '洪流 LED 手电筒', 'T500-BK ', '紧凑而强大的可潜水手电筒。 Princeton Tec Torrent 足够小，可以作为备用灯携带，并且具有 500 流明，也足以用作主光源。这款可潜水手电筒的防护等级为 IPX8，防水深度可达 100 米，可应对苛刻的环境。这款灯还具有一个易于使用、易于戴手套使用的开关，该开关可锁定到位，以避免在运输或储存过程中意外激活。这款手电筒也适用于紧急情况，虽然它使用 8 节 AA 电池供电，但它仍然会以较低的容量运行，只有 4 节。', 30.00, 130, '1739429492916_princeton-tec-torrent-black-main-1024x768.webp,1739429492917_princeton-tec-torrent-black-back-1024x768.webp,1739429492918_princeton-tec-torrent-black-front-1024x768.webp', 1000, '2025-02-13 14:51:33', '2025-02-13 14:51:33');
@@ -649,7 +665,7 @@ CREATE TABLE `sales_stats`  (
   INDEX `user_id`(`user_id` ASC) USING BTREE,
   CONSTRAINT `sales_stats_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `sales_stats_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 108 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 110 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sales_stats
@@ -758,6 +774,8 @@ INSERT INTO `sales_stats` VALUES (103, 253, 38, 1, 23.68, '2025-02-11 01:42:44')
 INSERT INTO `sales_stats` VALUES (105, 290, 105, 3, 79.73, '2025-02-09 02:46:55');
 INSERT INTO `sales_stats` VALUES (106, 111, 14, 10, 100.00, '2025-02-12 12:45:23');
 INSERT INTO `sales_stats` VALUES (107, 5, 14, 10, 100.00, '2025-02-12 13:15:44');
+INSERT INTO `sales_stats` VALUES (108, 114, 14, 1, 2.00, '2025-02-14 22:48:33');
+INSERT INTO `sales_stats` VALUES (109, 310, 14, 24, 24000.00, '2025-02-14 22:49:39');
 
 -- ----------------------------
 -- Table structure for users
