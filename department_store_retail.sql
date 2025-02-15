@@ -11,7 +11,7 @@
  Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 14/02/2025 22:57:03
+ Date: 15/02/2025 22:41:25
 */
 
 SET NAMES utf8mb4;
@@ -32,7 +32,7 @@ CREATE TABLE `cart`  (
   INDEX `product_id`(`product_id` ASC) USING BTREE,
   CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 40 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cart
@@ -47,6 +47,7 @@ INSERT INTO `cart` VALUES (35, 14, 101, 1, '2025-02-14 22:40:21');
 INSERT INTO `cart` VALUES (36, 14, 95, 1, '2025-02-14 22:40:29');
 INSERT INTO `cart` VALUES (37, 14, 27, 1, '2025-02-14 22:40:50');
 INSERT INTO `cart` VALUES (38, 14, 7, 1, '2025-02-14 22:40:55');
+INSERT INTO `cart` VALUES (40, 14, 7, 1, '2025-02-15 19:44:54');
 
 -- ----------------------------
 -- Table structure for categories
@@ -57,7 +58,7 @@ CREATE TABLE `categories`  (
   `name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '商品分类名',
   `sort` int NULL DEFAULT 0 COMMENT '排序字段',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of categories
@@ -802,7 +803,7 @@ INSERT INTO `users` VALUES (8, ' 李华门前的狗', '$2a$10$c7OHUV9BrkS1Ay5oTr
 INSERT INTO `users` VALUES (9, 'test', '$2a$10$4IdE1S96lfxYu6hf0KTJJODrBrBm8qGi4nnjN2GrINLVBHj9iRjQi', '2', '', '4', '1738659985986_photo_2024-03-27_13-20-37.jpg', 0, 0, '2025-02-04 17:06:26');
 INSERT INTO `users` VALUES (10, 'test01', '$2a$10$b0modQYcxz.iYZ7Uu3OiLOKghHloPLHDfNPEO7IX/5QFFUFNaeSJq', '3', '', '3', '1738663689333_photo_2024-03-27_13-20-37.jpg', 0, 0, '2025-02-04 18:08:09');
 INSERT INTO `users` VALUES (12, 'testa', '$2a$10$WGW.P4n2A7OVesxj7Upr9exdAj2VECnYFe8pToVE4Y9jT5kYzyp0G', '4', '', '2', '1738664069666_tx.png', 0, 0, '2025-02-04 18:14:30');
-INSERT INTO `users` VALUES (14, 'admin', '$2a$10$G4Ni/wXl8NQg8oBjXlHfy.LDzg5NavX9w6XKRdytW2cp3SQNofFVG', 'miemie@mie.com', '羊村', '123123123', '1738992447933_ts2.jpg', 1, 1, '2025-02-07 12:51:32');
+INSERT INTO `users` VALUES (14, 'admin', '$2a$10$G4Ni/wXl8NQg8oBjXlHfy.LDzg5NavX9w6XKRdytW2cp3SQNofFVG', 'miemie@mie.com', '浙江省杭州市西湖区龙井路178号碧水轩小区3号楼5单元301室', '13812345678', '1739628676311_tx (1).png', 1, 1, '2025-02-07 12:51:32');
 INSERT INTO `users` VALUES (15, 'e05ac899-d0ed-4ea8-95e8-36b5bc791b06', '$2a$10$/K4RnPAXEY93kxEW9ixHOeqd8F2itUyvRO5Ltha.vdBYYoRH7qis6', '', '', '', '1738998227577_photo_2024-03-27_13-20-37.jpg', 0, 0, '2025-02-08 15:03:48');
 INSERT INTO `users` VALUES (16, 'ebddbed5-aa27-4c18-ab8a-71c308b8a85b', '$2a$10$BE9i4FhLweBV2mhB5eUXwuXKNs7U1hq6m/HENtI1oE9EfHO3.e4yq', '', '', '', '1738998228846_photo_2024-03-27_13-20-37.jpg', 0, 0, '2025-02-08 15:03:49');
 INSERT INTO `users` VALUES (17, '35a0baed-c061-4f7b-9958-484004ef8b5c', '$2a$10$x40uuhtf1d59Xqzi4hAA/.RPCHPgYnYDqlVQf96EpQJrHs3P/mGoy', '', '', '', '1738998230091_photo_2024-03-27_13-20-37.jpg', 0, 0, '2025-02-08 15:03:50');
