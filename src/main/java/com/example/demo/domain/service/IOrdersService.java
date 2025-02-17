@@ -33,4 +33,5 @@ public interface IOrdersService extends IService<Orders> {
     IPage<Orders> getOrdersByStatusPage(Page<Orders> page, Integer status);
 
     IPage<OrderDetailsDTO> getOrderDetailsPage(Page<Orders> page);
+     List<OrderDetailsDTO> getOrdersByStatusAndUserId(Integer status, Integer userId);
 }

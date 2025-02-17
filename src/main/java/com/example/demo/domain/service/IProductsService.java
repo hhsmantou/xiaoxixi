@@ -39,4 +39,6 @@ public interface IProductsService extends IService<Products> {
     IPage<Products> getProductsPage(int pageNum, int pageSize, String keyword);
 
     List<Products> getProductsWithLowStock();
+
+    IPage<Products> getProductsByCategory(Integer category, int pageNum, int pageSize);
 }

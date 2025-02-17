@@ -23,10 +23,7 @@ public interface UsersMapper extends BaseMapper<Users> {
     
     // 根据用户名查询用户
     Users selectByUsername(@Param("username") String username);
-
-    // 根据ID查询用户
-    Users selectByID(@Param("id") Long id);
-
+    
     // 检查用户名是否存在
     boolean existsByUsername(@Param("username") String username);
     

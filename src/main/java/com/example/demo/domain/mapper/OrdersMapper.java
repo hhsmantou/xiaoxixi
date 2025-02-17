@@ -36,4 +36,7 @@ public interface OrdersMapper extends BaseMapper<Orders> {
 
     @Select("SELECT * FROM orders WHERE status = #{status}")
     IPage<Orders> selectOrdersByStatusPage(Page<Orders> page, @Param("status") Integer status);
+
+    @Select("SELECT * FROM orders WHERE status = #{status} AND user_id = #{userId}")
+    List<Orders> selectOrdersByStatusAndUserId(@Param("status") Integer status, @Param("userId") Integer userId);
 }

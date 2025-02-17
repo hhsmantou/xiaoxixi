@@ -90,4 +90,9 @@ public class ProductsServiceImpl extends ServiceImpl<ProductsMapper, Products> i
     public List<Products> getProductsWithLowStock() {
         return productsMapper.selectProductsWithLowStock();
     }
+    @Override
+    public IPage<Products> getProductsByCategory(Integer category, int pageNum, int pageSize) {
+        Page<Products> page = new Page<>(pageNum, pageSize);
+        return productsMapper.selectProductsByCategory(page, category);
+    }
 }

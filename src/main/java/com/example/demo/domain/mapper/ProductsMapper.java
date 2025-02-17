@@ -31,4 +31,7 @@ public interface ProductsMapper extends BaseMapper<Products> {
 
     @Select("SELECT * FROM products WHERE inventory < 100")
     List<Products> selectProductsWithLowStock();
+
+    @Select("SELECT * FROM products WHERE category = #{category}")
+    IPage<Products> selectProductsByCategory(Page<Products> page, @Param("category") Integer category);
 }

@@ -3,21 +3,20 @@
 <mapper namespace="com.example.demo.domain.mapper.UsersMapper">
 
     <resultMap id="BaseResultMap" type="com.example.demo.domain.entity.Users">
-        <id column="id" property="id"/>
-        <result column="username" property="username"/>
-        <result column="password" property="password"/>
-        <result column="email" property="email"/>
-        <result column="address" property="address"/>
-        <result column="phone" property="phone"/>
-        <result column="avatar" property="avatar"/>
-        <result column="role_id" property="roleId"/>
-        <result column="create_time" property="createTime"/>
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="email" property="email" />
+        <result column="address" property="address" />
+        <result column="phone" property="phone" />
+        <result column="avatar" property="avatar" />
+        <result column="role_id" property="roleId" />
+        <result column="create_time" property="createTime" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id
-        , username, password, email, address, phone, avatar, role_id, create_time
+        id, username, password, email, address, phone, avatar, role_id, create_time
     </sql>
 
     <!-- 更新用户信息 -->
@@ -51,39 +50,31 @@
 
     <!-- 根据用户名查询用户 -->
     <select id="selectByUsername" resultMap="BaseResultMap">
-        SELECT
+        SELECT 
         <include refid="Base_Column_List"/>
-        FROM users
+        FROM users 
         WHERE username = #{username}
     </select>
 
-    <!-- 根据用户名ID用户 -->
-    <select id="selectByID" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM users
-        WHERE id = #{id}
-    </select>
     <!-- 检查用户名是否存在 -->
     <select id="existsByUsername" resultType="boolean">
-        SELECT COUNT(*)
-        FROM users
-        WHERE username = #{username}
+        SELECT COUNT(*) FROM users WHERE username = #{username}
     </select>
 
     <!-- 插入新用户 -->
-    <insert id="insertUser" parameterType="com.example.demo.domain.entity.Users"
+    <insert id="insertUser" parameterType="com.example.demo.domain.entity.Users" 
             useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO users (username, password, email, address, phone, avatar, role_id, is_member, create_time)
-        VALUES (#{username}, #{password}, #{email}, #{address}, #{phone},
-                #{avatar}, #{roleId}, #{isMember}, #{createTime})
+        INSERT INTO users (
+            username, password, email, address, phone, avatar, role_id,is_member, create_time
+        ) VALUES (
+            #{username}, #{password}, #{email}, #{address}, #{phone}, 
+            #{avatar}, #{roleId}, #{isMember},#{createTime}
+        )
     </insert>
 
     <!-- 根据ID删除用户 -->
     <delete id="deleteById">
-        DELETE
-        FROM users
-        WHERE id = #{id}
+        DELETE FROM users WHERE id = #{id}
     </delete>
 
     <!-- 批量删除用户 -->
@@ -96,7 +87,7 @@
 
     <!-- 条件查询用户列表 -->
     <select id="selectUserList" resultMap="BaseResultMap">
-        SELECT
+        SELECT 
         <include refid="Base_Column_List"/>
         FROM users
         <where>
@@ -130,8 +121,7 @@
     <!-- 分页查询用户 -->
     <!-- 分页查询用户 -->
     <select id="selectUsersPage" resultType="com.example.demo.domain.entity.Users">
-        SELECT *
-        FROM users
+        SELECT * FROM users
         WHERE (#{username} IS NULL OR username LIKE CONCAT('%', #{username}, '%'))
           AND (#{phone} IS NULL OR phone LIKE CONCAT('%', #{phone}, '%'))
           AND (#{email} IS NULL OR email LIKE CONCAT('%', #{email}, '%'))

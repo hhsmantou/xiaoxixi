@@ -2,19 +2,17 @@ package com.example.demo.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
  * <p>
- *
+ * 
  * </p>
  *
- * @author
+ * @author 
  * @since 2025-01-19
  */
 @ApiModel(value = "Cart对象", description = "")
@@ -23,7 +21,7 @@ public class Cart implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("购物车id")
-    @TableId(value = "id", type = IdType.AUTO)
+      @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     @ApiModelProperty("用户id")
@@ -82,11 +80,11 @@ public class Cart implements Serializable {
     @Override
     public String toString() {
         return "Cart{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", productId=" + productId +
-                ", quantity=" + quantity +
-                ", createTime=" + createTime +
-                '}';
+        "id=" + id +
+        ", userId=" + userId +
+        ", productId=" + productId +
+        ", quantity=" + quantity +
+        ", createTime=" + createTime +
+        "}";
     }
 }

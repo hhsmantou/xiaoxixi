@@ -14,4 +14,5 @@ public interface OrderDetailsMapper extends IService<OrderDetails> {
     List<OrderDetails> getOrderDetailsByOrderId(@Param("orderId") Integer orderId);
     int updateOrderDetails(OrderDetails orderDetails);
     int deleteOrderDetailsById(@Param("id") Integer id);
+
 }

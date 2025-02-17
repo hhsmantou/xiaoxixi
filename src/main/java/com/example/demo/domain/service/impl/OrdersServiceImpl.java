@@ -187,17 +187,29 @@ public boolean createOrder(OrderRequest orderRequest) {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public IPage<OrderDetailsDTO> getOrderDetailsPage(Page<Orders> page) {
         IPage<Orders> ordersPage = ordersMapper.selectPage(page, null);
         List<OrderDetailsDTO> orderDetailsList = ordersPage.getRecords().stream().map(order -> {
-            Products product = productsMapper.selectById(order.getProductId());
-            Users user = usersMapper.selectById(order.getUserId());
-            return new OrderDetailsDTO(order, product, user);
+            List<OrderDetails> detailsList = orderDetailsMapper.getOrderDetailsByOrderId(order.getId());
+            List<Products> products = detailsList.stream()
+                    .map(detail -> productsMapper.selectById(detail.getProductId()))
+                    .collect(Collectors.toList());
+            return new OrderDetailsDTO(order, products);
         }).collect(Collectors.toList());
-
 
         Page<OrderDetailsDTO> orderDetailsDTOPage = new Page<>(page.getCurrent(), page.getSize(), ordersPage.getTotal());
         orderDetailsDTOPage.setRecords(orderDetailsList);
         return orderDetailsDTOPage;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public List<OrderDetailsDTO> getOrdersByStatusAndUserId(Integer status, Integer userId) {
+        List<Orders> ordersList = ordersMapper.selectOrdersByStatusAndUserId(status, userId);
+        return ordersList.stream().map(order -> {
+            Products product = productsMapper.selectById(order.getProductId());
+            return new OrderDetailsDTO(order, product);
+        }).collect(Collectors.toList());
     }
 }

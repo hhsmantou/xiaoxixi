@@ -11,7 +11,7 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private static final long EXPIRE_TIME =  30 * 60 * 1000; // 30分钟
+    private static final long EXPIRE_TIME =  24 * 60 * 60 * 1000; // 一天
     private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     public String generateToken(String username) {
