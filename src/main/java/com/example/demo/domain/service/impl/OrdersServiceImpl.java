@@ -191,11 +191,14 @@ public boolean createOrder(OrderRequest orderRequest) {
     public IPage<OrderDetailsDTO> getOrderDetailsPage(Page<Orders> page) {
         IPage<Orders> ordersPage = ordersMapper.selectPage(page, null);
         List<OrderDetailsDTO> orderDetailsList = ordersPage.getRecords().stream().map(order -> {
-            List<OrderDetails> detailsList = orderDetailsMapper.getOrderDetailsByOrderId(order.getId());
-            List<Products> products = detailsList.stream()
+            Users user = usersMapper.selectById(order.getUserId());
+            if (user != null) {
+                user.setPassword(null); 
+            }
+            List<Products> products = orderDetailsMapper.getOrderDetailsByOrderId(order.getId()).stream()
                     .map(detail -> productsMapper.selectById(detail.getProductId()))
                     .collect(Collectors.toList());
-            return new OrderDetailsDTO(order, products);
+            return new OrderDetailsDTO(order, user, products);
         }).collect(Collectors.toList());
 
         Page<OrderDetailsDTO> orderDetailsDTOPage = new Page<>(page.getCurrent(), page.getSize(), ordersPage.getTotal());
