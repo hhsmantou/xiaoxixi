@@ -205,11 +205,21 @@ public boolean createOrder(OrderRequest orderRequest) {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<OrderDetailsDTO> getOrdersByStatusAndUserId(Integer status, Integer userId) {
-        List<Orders> ordersList = ordersMapper.selectOrdersByStatusAndUserId(status, userId);
-        return ordersList.stream().map(order -> {
-            Products product = productsMapper.selectById(order.getProductId());
-            return new OrderDetailsDTO(order, product);
+    public IPage<OrderDetailsDTO> getOrdersByStatusAndUserId(Page<Orders> page, Integer status, Integer userId) {
+        IPage<Orders> ordersPage = ordersMapper.selectOrdersByStatusAndUserIdPage(page, status, userId);
+        List<OrderDetailsDTO> orderDetailsList = ordersPage.getRecords().stream().map(order -> {
+            Users user = usersMapper.selectById(order.getUserId());
+            if (user != null) {
+                user.setPassword(null); // Ensure password is set to null
+            }
+            List<Products> products = orderDetailsMapper.getOrderDetailsByOrderId(order.getId()).stream()
+                    .map(detail -> productsMapper.selectById(detail.getProductId()))
+                    .collect(Collectors.toList());
+            return new OrderDetailsDTO(order, user, products);
         }).collect(Collectors.toList());
+
+        Page<OrderDetailsDTO> orderDetailsDTOPage = new Page<>(page.getCurrent(), page.getSize(), ordersPage.getTotal());
+        orderDetailsDTOPage.setRecords(orderDetailsList);
+        return orderDetailsDTOPage;
     }
 }

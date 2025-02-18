@@ -29,4 +29,9 @@ public class OrderDetailsDTO {
         this.order = order;
         this.products = products;
     }
+    public OrderDetailsDTO(Orders order, Users user, List<Products> products) {
+        this.order = order;
+        this.user = user;
+        this.products = products;
+    }
 }

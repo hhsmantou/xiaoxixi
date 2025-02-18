@@ -5,6 +5,7 @@ import com.example.demo.domain.entity.OrderDetails;
 import com.example.demo.domain.entity.Products;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -14,5 +15,6 @@ public interface OrderDetailsMapper extends IService<OrderDetails> {
     List<OrderDetails> getOrderDetailsByOrderId(@Param("orderId") Integer orderId);
     int updateOrderDetails(OrderDetails orderDetails);
     int deleteOrderDetailsById(@Param("id") Integer id);
-
+//    @Select("SELECT * FROM order_details WHERE order_id = #{orderId}")
+//    List<OrderDetails> getOrderDetailsByOrderId(@Param("orderId") Integer orderId);
 }
