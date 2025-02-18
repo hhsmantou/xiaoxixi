@@ -270,5 +270,16 @@ public class UsersController {
         boolean isUpdated = usersService.updateUserMembership(id, isMember);
         return isUpdated ? Result.success("会员状态更新成功") : Result.error("会员状态更新失败");
     }
+    @GetMapping("/{id}")
+    @ApiOperation(value = "根据用户ID获取用户信息", notes = "根据用户ID获取用户详细信息")
+    public Result<Users> getUserById(@PathVariable Integer id) {
+        Users user = usersService.getUserById(id);
+        if (user != null) {
+            user.setPassword(null); 
+            return Result.success(user);
+        } else {
+            return Result.error("用户不存在");
+        }
+    }
 }
 

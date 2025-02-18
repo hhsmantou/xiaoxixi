@@ -37,6 +37,7 @@ public interface IUsersService extends IService<Users> {
 
     boolean isUserMember(Integer userId);
     boolean updateUserMembership(Integer userId, Integer isMember);
+    Users getUserById(Integer id);
 }
 
 

@@ -115,4 +115,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         }
         return false;
     }
+    @Override
+    public Users getUserById(Integer id) {
+        return usersMapper.selectUserById(id);
+    }
 }

@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.annotations.Select;
+
 /**
  * <p>
  *  Mapper 接口
@@ -44,5 +46,8 @@ public interface UsersMapper extends BaseMapper<Users> {
                                  @Param("phone") String phone,
                                  @Param("email") String email,
                                  @Param("roleId") Integer roleId);
+
+    @Select("SELECT * FROM users WHERE id = #{id}")
+    Users selectUserById(@Param("id") Integer id);
 }
 

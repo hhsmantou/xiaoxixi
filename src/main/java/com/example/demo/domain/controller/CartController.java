@@ -2,12 +2,15 @@ package com.example.demo.domain.controller;
 
 import com.example.demo.common.Result;
 import com.example.demo.domain.entity.Cart;
+import com.example.demo.domain.entity.CartAndProduct;
 import com.example.demo.domain.service.ICartService;
+import com.example.demo.domain.service.IProductsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +27,8 @@ import java.util.List;
 public class CartController {
         @Autowired
         private ICartService cartService;
+        @Autowired
+        private IProductsService productsService;
 
         @PostMapping
         @ApiOperation(value = "添加商品到购物车", notes = "根据用户ID和商品ID添加商品到购物车")
@@ -59,11 +64,25 @@ public class CartController {
             }
         }
 
-        @GetMapping
-        @ApiOperation(value = "获取购物车列表", notes = "根据用户ID获取购物车列表")
-        public Result<List<Cart>> getCartList(@RequestParam Integer userId) {
-            List<Cart> cartList = cartService.getCartList(userId);
-            return Result.success(cartList);
+    @GetMapping
+    @ApiOperation(value = "获取购物车列表", notes = "根据用户ID获取购物车列表")
+    public Result<List<CartAndProduct>> getCartList(@RequestParam Integer userId) {
+
+        List<Cart> cartList = cartService.getCartList(userId);
+        List<CartAndProduct> cartAndProductList = new ArrayList<>();
+        for (Cart cart : cartList) {
+            CartAndProduct cartAndProduct = new CartAndProduct();
+            cartAndProduct.setId(cart.getId());
+            cartAndProduct.setProductId(cart.getProductId());
+            cartAndProduct.setQuantity(cart.getQuantity());
+            cartAndProduct.setUserId(userId);
+            cartAndProduct.setCreateTime(cart.getCreateTime());
+            cartAndProduct.setProducts(productsService.getProductById(cart.getProductId()));
+            cartAndProductList.add(cartAndProduct);
         }
+
+        return Result.success(cartAndProductList);
     }
+}
+
 
