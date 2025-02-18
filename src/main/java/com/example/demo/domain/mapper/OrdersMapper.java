@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
@@ -43,4 +44,6 @@ public interface OrdersMapper extends BaseMapper<Orders> {
 
     @Select("SELECT * FROM orders WHERE status = #{status} AND user_id = #{userId}")
     IPage<Orders> selectOrdersByStatusAndUserIdPage(Page<Orders> page, @Param("status") Integer status, @Param("userId") Integer userId);
+
+    IPage<Orders> selectOrdersByUserIdAndStatus(Page<Orders> page, @Param("userId") Integer userId, @Param("status") Integer status);
 }

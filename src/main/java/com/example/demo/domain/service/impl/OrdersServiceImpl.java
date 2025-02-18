@@ -193,7 +193,7 @@ public boolean createOrder(OrderRequest orderRequest) {
         List<OrderDetailsDTO> orderDetailsList = ordersPage.getRecords().stream().map(order -> {
             Users user = usersMapper.selectById(order.getUserId());
             if (user != null) {
-                user.setPassword(null); 
+                user.setPassword(null);
             }
             List<Products> products = orderDetailsMapper.getOrderDetailsByOrderId(order.getId()).stream()
                     .map(detail -> productsMapper.selectById(detail.getProductId()))
@@ -206,7 +206,9 @@ public boolean createOrder(OrderRequest orderRequest) {
         return orderDetailsDTOPage;
     }
 
-    @Override
+
+
+        @Override
     @Transactional(rollbackFor = Exception.class)
     public IPage<OrderDetailsDTO> getOrdersByStatusAndUserId(Page<Orders> page, Integer status, Integer userId) {
         IPage<Orders> ordersPage = ordersMapper.selectOrdersByStatusAndUserIdPage(page, status, userId);
@@ -225,4 +227,23 @@ public boolean createOrder(OrderRequest orderRequest) {
         orderDetailsDTOPage.setRecords(orderDetailsList);
         return orderDetailsDTOPage;
     }
+@Override
+@Transactional(rollbackFor = Exception.class)
+public IPage<OrderDetailsDTO> getOrdersByUserIdAndStatus(Page<Orders> page, Integer userId, Integer status) {
+    IPage<Orders> ordersPage = ordersMapper.selectOrdersByUserIdAndStatus(page, userId, status);
+    List<OrderDetailsDTO> orderDetailsList = ordersPage.getRecords().stream().map(order -> {
+        Users user = usersMapper.selectById(order.getUserId());
+        if (user != null) {
+            user.setPassword(null); // Ensure password is set to null
+        }
+        List<Products> products = orderDetailsMapper.getOrderDetailsByOrderId(order.getId()).stream()
+                .map(detail -> productsMapper.selectById(detail.getProductId()))
+                .collect(Collectors.toList());
+        return new OrderDetailsDTO(order, user, products);
+    }).collect(Collectors.toList());
+
+    Page<OrderDetailsDTO> orderDetailsDTOPage = new Page<>(page.getCurrent(), page.getSize(), ordersPage.getTotal());
+    orderDetailsDTOPage.setRecords(orderDetailsList);
+    return orderDetailsDTOPage;
+}
 }
