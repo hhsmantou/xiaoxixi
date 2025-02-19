@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Result;
 import com.example.demo.domain.dto.SalesDetailsDTO;
+import com.example.demo.domain.dto.SalesStatsDTO;
+import com.example.demo.domain.dto.TotalSalesDTO;
 import com.example.demo.domain.entity.Products;
 import com.example.demo.domain.entity.SalesStats;
 import com.example.demo.domain.service.ISalesStatsService;
@@ -79,5 +81,28 @@ public class SalesStatsController {
     public Result<Products> getBestSellingProduct() {
         Products bestSellingProduct = salesStatsService.getBestSellingProduct();
         return Result.success(bestSellingProduct);
+    }
+
+
+
+    @GetMapping("/stats/month/{year}/{month}")
+    @ApiOperation(value = "获取指定月份销售统计", notes = "获取指定年份和月份的销售量和总收入")
+    public Result<List<SalesStatsDTO>> getSalesStatsByMonth(@PathVariable int year, @PathVariable int month) {
+        List<SalesStatsDTO> stats = salesStatsService.getSalesStatsByMonth(year, month);
+        return Result.success(stats);
+    }
+
+    @GetMapping("/stats/day/{date}")
+    @ApiOperation(value = "获取指定日期销售统计", notes = "获取指定日期的销售量和总收入")
+    public Result<List<SalesStatsDTO>> getSalesStatsByDay(@PathVariable String date) {
+        List<SalesStatsDTO> stats = salesStatsService.getSalesStatsByDay(date);
+        return Result.success(stats);
+    }
+
+    @GetMapping("/stats/monthly-total")
+    @ApiOperation(value = "获取本月销售总数和营业额", notes = "获取本月的销售总数和营业额")
+    public Result<TotalSalesDTO> getMonthlyTotalSales() {
+        TotalSalesDTO totalSales = salesStatsService.getMonthlyTotalSales();
+        return Result.success(totalSales);
     }
 }

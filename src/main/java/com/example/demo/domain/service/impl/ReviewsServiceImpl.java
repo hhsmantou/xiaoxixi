@@ -1,5 +1,6 @@
 package com.example.demo.domain.service.impl;
 
+import com.example.demo.domain.dto.ReviewWithUserDTO;
 import com.example.demo.domain.entity.Reviews;
 import com.example.demo.domain.mapper.ReviewsMapper;
 import com.example.demo.domain.service.IReviewsService;
@@ -73,5 +74,9 @@ public class ReviewsServiceImpl extends ServiceImpl<ReviewsMapper, Reviews> impl
     @Override
     public IPage<Reviews> getReviewsByUserIdPage(Page<Reviews> page, Integer userId) {
         return reviewsMapper.selectReviewsByUserIdPage(page, userId);
+    }
+    @Override
+    public IPage<ReviewWithUserDTO> getReviewsWithUserByProductIdPage(Page<ReviewWithUserDTO> page, Integer productId) {
+        return reviewsMapper.selectReviewsWithUserByProductIdPage(page, productId);
     }
 }

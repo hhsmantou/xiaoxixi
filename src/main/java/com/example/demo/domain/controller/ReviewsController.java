@@ -1,6 +1,7 @@
 package com.example.demo.domain.controller;
 
 import com.example.demo.common.Result;
+import com.example.demo.domain.dto.ReviewWithUserDTO;
 import com.example.demo.domain.entity.Reviews;
 import com.example.demo.domain.service.IReviewsService;
 import io.swagger.annotations.Api;
@@ -95,6 +96,16 @@ public class ReviewsController {
             @RequestParam(defaultValue = "10") int size) {
         Page<Reviews> reviewPage = new Page<>(page, size);
         IPage<Reviews> reviewsPage = reviewsService.getReviewsByUserIdPage(reviewPage, userId);
+        return Result.success(reviewsPage);
+    }
+    @GetMapping("/product/{productId}/with-user/page")
+    @ApiOperation(value = "根据商品ID获取评价及用户信息分页列表", notes = "获取指定商品的评价及用户信息分页列表")
+    public Result<IPage<ReviewWithUserDTO>> getReviewsWithUserByProductIdPage(
+            @PathVariable Integer productId,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<ReviewWithUserDTO> reviewPage = new Page<>(page, size);
+        IPage<ReviewWithUserDTO> reviewsPage = reviewsService.getReviewsWithUserByProductIdPage(reviewPage, productId);
         return Result.success(reviewsPage);
     }
 }

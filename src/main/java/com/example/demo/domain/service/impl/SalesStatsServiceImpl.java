@@ -3,6 +3,8 @@ package com.example.demo.domain.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.domain.dto.SalesDetailsDTO;
+import com.example.demo.domain.dto.SalesStatsDTO;
+import com.example.demo.domain.dto.TotalSalesDTO;
 import com.example.demo.domain.entity.SalesStats;
 import com.example.demo.domain.entity.Products;
 import com.example.demo.domain.entity.Users;
@@ -108,5 +110,18 @@ public class SalesStatsServiceImpl extends ServiceImpl<SalesStatsMapper, SalesSt
     @Override
     public Products getBestSellingProduct() {
         return salesStatsMapper.selectBestSellingProduct();
+    }
+    @Override
+    public List<SalesStatsDTO> getSalesStatsByMonth(int year, int month) {
+        return salesStatsMapper.getSalesStatsByMonth(year, month);
+    }
+
+    @Override
+    public List<SalesStatsDTO> getSalesStatsByDay(String date) {
+        return salesStatsMapper.getSalesStatsByDay(date);
+    }
+    @Override
+    public TotalSalesDTO getMonthlyTotalSales() {
+        return salesStatsMapper.getMonthlyTotalSales();
     }
 }

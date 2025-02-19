@@ -51,6 +51,7 @@ public class OrdersController {
         boolean isDeleted = ordersService.deleteOrderById(id);
         return isDeleted ? Result.success("订单删除成功") : Result.error("订单删除失败");
     }
+
     @GetMapping("/{orderId}/details")
     @ApiOperation(value = "获取订单及其详情", notes = "根据订单ID获取订单及其详情")
     public Result<OrderRequest> getOrderWithDetails(@PathVariable Integer orderId) {
@@ -64,6 +65,7 @@ public class OrdersController {
         List<OrderRequest> orderRequests = ordersService.getOrdersWithDetailsByUserId(userId);
         return Result.success(orderRequests);
     }
+
     @GetMapping("/page")
     @ApiOperation(value = "获取订单分页列表", notes = "获取订单的分页列表")
     public Result<IPage<Orders>> getOrdersPage(
@@ -84,6 +86,7 @@ public class OrdersController {
         IPage<Orders> ordersPage = ordersService.getOrdersByStatusPage(orderPage, status);
         return Result.success(ordersPage);
     }
+
     @GetMapping("/details/page")
     @ApiOperation(value = "获取订单详细信息分页", notes = "获取订单及其相关的商品和用户信息的分页列表")
     public Result<IPage<OrderDetailsDTO>> getOrderDetailsPage(
@@ -93,7 +96,8 @@ public class OrdersController {
         IPage<OrderDetailsDTO> orderDetails = ordersService.getOrderDetailsPage(orderPage);
         return Result.success(orderDetails);
     }
-//    @GetMapping("/status/{status}/user/{userId}/page")
+
+    //    @GetMapping("/status/{status}/user/{userId}/page")
 //    @ApiOperation(value = "根据订单状态和用户ID分页获取订单列表", notes = "根据订单状态和用户ID分页获取订单列表，并携带商品详情和用户信息")
 //    public Result<IPage<OrderDetailsDTO>> getOrdersByStatusAndUserId(
 //            @PathVariable Integer status,
@@ -115,4 +119,7 @@ public class OrdersController {
         IPage<OrderDetailsDTO> orders = ordersService.getOrdersByUserIdAndStatus(orderPage, userId, status);
         return Result.success(orders);
     }
+
+
+
 }

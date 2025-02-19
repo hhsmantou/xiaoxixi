@@ -1,5 +1,6 @@
 package com.example.demo.domain.service;
 
+import com.example.demo.domain.dto.ReviewWithUserDTO;
 import com.example.demo.domain.entity.Reviews;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -24,6 +25,7 @@ public interface IReviewsService extends IService<Reviews> {
         IPage<Reviews> getReviewsPage(Page<Reviews> page);
         IPage<Reviews> getReviewsByProductIdPage(Page<Reviews> page, Integer productId);
         IPage<Reviews> getReviewsByUserIdPage(Page<Reviews> page, Integer userId);
+        IPage<ReviewWithUserDTO> getReviewsWithUserByProductIdPage(Page<ReviewWithUserDTO> page, Integer productId);
 }
 
 

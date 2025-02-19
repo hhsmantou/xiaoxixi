@@ -1,5 +1,7 @@
 package com.example.demo.domain.service;
 
+import com.example.demo.domain.dto.SalesStatsDTO;
+import com.example.demo.domain.dto.TotalSalesDTO;
 import com.example.demo.domain.entity.SalesStats;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.demo.domain.dto.SalesDetailsDTO;
@@ -26,4 +28,10 @@ public interface ISalesStatsService extends IService<SalesStats> {
     List<Products> getTop10ProductsBySales();
     List<Products> getBottom10ProductsBySales();
     Products getBestSellingProduct();
+
+    List<SalesStatsDTO> getSalesStatsByMonth(int year, int month);
+
+    List<SalesStatsDTO> getSalesStatsByDay(String date);
+
+    TotalSalesDTO getMonthlyTotalSales();
 }

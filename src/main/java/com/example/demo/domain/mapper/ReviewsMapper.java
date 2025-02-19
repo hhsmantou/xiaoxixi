@@ -1,5 +1,6 @@
 package com.example.demo.domain.mapper;
 
+import com.example.demo.domain.dto.ReviewWithUserDTO;
 import com.example.demo.domain.entity.Reviews;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.data.repository.query.Param;
@@ -28,4 +29,6 @@ public interface ReviewsMapper extends BaseMapper<Reviews> {
 
     @Select("SELECT * FROM reviews WHERE user_id = #{userId}")
     IPage<Reviews> selectReviewsByUserIdPage(Page<Reviews> page, @Param("userId") Integer userId);
+
+    IPage<ReviewWithUserDTO> selectReviewsWithUserByProductIdPage(Page<ReviewWithUserDTO> page, @Param("productId") Integer productId);
 }
