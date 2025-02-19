@@ -108,10 +108,10 @@ public class OrdersController {
 //        IPage<OrderDetailsDTO> orders = ordersService.getOrdersByStatusAndUserId(orderPage, status, userId);
 //        return Result.success(orders);
 //    }
-    @GetMapping("/user/{userId}/page")
+    @GetMapping("/user/status/page")
     @ApiOperation(value = "根据用户ID分页获取订单列表", notes = "根据用户ID分页获取订单列表，并携带商品详情和用户信息")
     public Result<IPage<OrderDetailsDTO>> getOrdersByUserIdAndStatus(
-            @PathVariable Integer userId,
+            @RequestParam(required = false) Integer userId,
             @RequestParam(required = false) Integer status, // Make status optional
             @RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "10") int pageSize) {
