@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.domain.mapper.SalesStatsMapper">
+    <select id="getSalesStatsByMonth" resultType="com.example.demo.domain.dto.SalesStatsDTO">
+        SELECT p.id AS productId, p.name AS productName, p.model, p.info, p.price, p.category, p.cover, p.inventory,
+               SUM(s.quantity_sold) AS quantitySold, SUM(s.total_revenue) AS totalRevenue
+        FROM sales_stats s
+                 JOIN products p ON s.product_id = p.id
+        WHERE YEAR(s.sold_time) = #{year} AND MONTH(s.sold_time) = #{month}
+        GROUP BY p.id
+    </select>
 
+    <select id="getSalesStatsByDay" resultType="com.example.demo.domain.dto.SalesStatsDTO">
+        SELECT p.id AS productId, p.name AS productName, p.model, p.info, p.price, p.category, p.cover, p.inventory,
+               SUM(s.quantity_sold) AS quantitySold, SUM(s.total_revenue) AS totalRevenue
+        FROM sales_stats s
+                 JOIN products p ON s.product_id = p.id
+        WHERE DATE(s.sold_time) = #{date}
+        GROUP BY p.id
+    </select>
+    <select id="getMonthlyTotalSales" resultType="com.example.demo.domain.dto.TotalSalesDTO">
+        SELECT SUM(s.quantity_sold) AS totalQuantitySold, SUM(s.total_revenue) AS totalRevenue
+        FROM sales_stats s
+        WHERE YEAR(s.sold_time) = YEAR(CURRENT_DATE()) AND MONTH(s.sold_time) = MONTH(CURRENT_DATE())
+    </select>
 </mapper>

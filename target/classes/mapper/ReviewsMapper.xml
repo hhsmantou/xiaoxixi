@@ -27,4 +27,23 @@
     <select id="selectReviewsByProductId" resultType="com.example.demo.domain.entity.Reviews">
         SELECT * FROM reviews WHERE product_id = #{productId}
     </select>
+    <resultMap id="ReviewWithUserResultMap" type="com.example.demo.domain.dto.ReviewWithUserDTO">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="product_id" property="productId" />
+        <result column="rating" property="rating" />
+        <result column="content" property="content" />
+        <result column="create_time" property="createTime" />
+        <result column="username" property="username" />
+        <result column="email" property="email" />
+        <result column="avatar" property="avatar" />
+    </resultMap>
+
+    <select id="selectReviewsWithUserByProductIdPage" resultMap="ReviewWithUserResultMap">
+        SELECT r.*, u.username, u.email, u.avatar
+        FROM reviews r
+                 JOIN users u ON r.user_id = u.id
+        WHERE r.product_id = #{productId}
+    </select>
+
 </mapper>

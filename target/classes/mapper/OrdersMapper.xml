@@ -23,4 +23,15 @@
     <select id="getOrdersByUserId" resultType="com.example.demo.domain.entity.Orders">
         SELECT * FROM orders WHERE user_id = #{userId} ORDER BY create_time DESC
     </select>
+
+    <select id="selectOrdersByUserIdAndStatus" resultType="com.example.demo.domain.entity.Orders">
+        SELECT * FROM orders
+        WHERE 1=1
+        <if test="userId != null">
+            AND    user_id = #{userId}
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+    </select>
 </mapper>
