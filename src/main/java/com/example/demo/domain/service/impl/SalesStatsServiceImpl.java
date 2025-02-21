@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.domain.dto.SalesDetailsDTO;
 import com.example.demo.domain.dto.SalesStatsDTO;
+import com.example.demo.domain.dto.SalesStatsProductDTO;
 import com.example.demo.domain.dto.TotalSalesDTO;
 import com.example.demo.domain.entity.SalesStats;
 import com.example.demo.domain.entity.Products;
@@ -98,17 +99,18 @@ public class SalesStatsServiceImpl extends ServiceImpl<SalesStatsMapper, SalesSt
         return salesStatsMapper.selectById(id);
     }
     @Override
-    public List<Products> getTop10ProductsBySales() {
+    public List<SalesStatsProductDTO> getTop10ProductsBySales() {
+
         return salesStatsMapper.selectTop10ProductsBySales();
     }
 
     @Override
-    public List<Products> getBottom10ProductsBySales() {
+    public List<SalesStatsProductDTO> getBottom10ProductsBySales() {
         return salesStatsMapper.selectBottom10ProductsBySales();
     }
 
     @Override
-    public Products getBestSellingProduct() {
+    public SalesStatsProductDTO getBestSellingProduct() {
         return salesStatsMapper.selectBestSellingProduct();
     }
     @Override

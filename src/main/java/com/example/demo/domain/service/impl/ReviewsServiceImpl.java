@@ -79,4 +79,8 @@ public class ReviewsServiceImpl extends ServiceImpl<ReviewsMapper, Reviews> impl
     public IPage<ReviewWithUserDTO> getReviewsWithUserByProductIdPage(Page<ReviewWithUserDTO> page, Integer productId) {
         return reviewsMapper.selectReviewsWithUserByProductIdPage(page, productId);
     }
+    @Override
+    public List<ReviewWithUserDTO> getLatestReviewsWithUser() {
+        return reviewsMapper.selectLatestReviewsWithUser();
+    }
 }

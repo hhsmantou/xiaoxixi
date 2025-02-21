@@ -1,6 +1,7 @@
 package com.example.demo.domain.mapper;
 
 import com.example.demo.domain.dto.SalesStatsDTO;
+import com.example.demo.domain.dto.SalesStatsProductDTO;
 import com.example.demo.domain.dto.TotalSalesDTO;
 import com.example.demo.domain.entity.Products;
 import com.example.demo.domain.entity.SalesStats;
@@ -24,19 +25,19 @@ public interface SalesStatsMapper extends BaseMapper<SalesStats> {
     @Select("SELECT p.*, SUM(s.quantity_sold) as total_sold FROM sales_stats s " +
             "JOIN products p ON s.product_id = p.id " +
             "GROUP BY p.id ORDER BY total_sold DESC LIMIT 10")
-    List<Products> selectTop10ProductsBySales();
+    List<SalesStatsProductDTO> selectTop10ProductsBySales();
 
 
     @Select("SELECT p.*, SUM(s.quantity_sold) as total_sold FROM sales_stats s " +
             "JOIN products p ON s.product_id = p.id " +
             "GROUP BY p.id ORDER BY total_sold ASC LIMIT 10")
-    List<Products> selectBottom10ProductsBySales();
+    List<SalesStatsProductDTO> selectBottom10ProductsBySales();
 
 
     @Select("SELECT p.*, SUM(s.quantity_sold) as total_sold FROM sales_stats s " +
             "JOIN products p ON s.product_id = p.id " +
             "GROUP BY p.id ORDER BY total_sold DESC LIMIT 1")
-    Products selectBestSellingProduct();
+    SalesStatsProductDTO selectBestSellingProduct();
 
     List<SalesStatsDTO> getSalesStatsByMonth(@Param("year") int year, @Param("month") int month);
 

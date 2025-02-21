@@ -31,4 +31,5 @@ public interface ReviewsMapper extends BaseMapper<Reviews> {
     IPage<Reviews> selectReviewsByUserIdPage(Page<Reviews> page, @Param("userId") Integer userId);
 
     IPage<ReviewWithUserDTO> selectReviewsWithUserByProductIdPage(Page<ReviewWithUserDTO> page, @Param("productId") Integer productId);
+    List<ReviewWithUserDTO> selectLatestReviewsWithUser();
 }

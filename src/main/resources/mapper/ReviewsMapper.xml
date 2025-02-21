@@ -46,4 +46,13 @@
         WHERE r.product_id = #{productId}
     </select>
 
+
+    <select id="selectLatestReviewsWithUser" resultMap="ReviewWithUserResultMap">
+        SELECT r.*, u.username, u.email, u.avatar
+        FROM reviews r
+                 JOIN users u ON r.user_id = u.id
+        ORDER BY r.create_time DESC
+            LIMIT 30
+    </select>
+
 </mapper>

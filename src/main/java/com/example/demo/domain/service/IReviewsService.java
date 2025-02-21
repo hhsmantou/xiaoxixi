@@ -26,6 +26,7 @@ public interface IReviewsService extends IService<Reviews> {
         IPage<Reviews> getReviewsByProductIdPage(Page<Reviews> page, Integer productId);
         IPage<Reviews> getReviewsByUserIdPage(Page<Reviews> page, Integer userId);
         IPage<ReviewWithUserDTO> getReviewsWithUserByProductIdPage(Page<ReviewWithUserDTO> page, Integer productId);
+        List<ReviewWithUserDTO> getLatestReviewsWithUser();
 }
 
 

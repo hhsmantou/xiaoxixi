@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.common.Result;
 import com.example.demo.domain.dto.SalesDetailsDTO;
 import com.example.demo.domain.dto.SalesStatsDTO;
+import com.example.demo.domain.dto.SalesStatsProductDTO;
 import com.example.demo.domain.dto.TotalSalesDTO;
 import com.example.demo.domain.entity.Products;
 import com.example.demo.domain.entity.SalesStats;
@@ -64,22 +65,23 @@ public class SalesStatsController {
 
     @GetMapping("/top10")
     @ApiOperation(value = "获取销售最多的前十个商品", notes = "获取销售最多的前十个商品及其详细信息")
-    public Result<List<Products>> getTop10ProductsBySales() {
-        List<Products> top10Products = salesStatsService.getTop10ProductsBySales();
+    public Result<List<SalesStatsProductDTO>> getTop10ProductsBySales() {
+        List<SalesStatsProductDTO> top10Products = salesStatsService.getTop10ProductsBySales();
+        System.out.println(salesStatsService.getBottom10ProductsBySales());
         return Result.success(top10Products);
     }
 
     @GetMapping("/bottom10")
     @ApiOperation(value = "获取销售最少的后十个商品", notes = "获取销售最少的后十个商品及其详细信息")
-    public Result<List<Products>> getBottom10ProductsBySales() {
-        List<Products> bottom10Products = salesStatsService.getBottom10ProductsBySales();
+    public Result<List<SalesStatsProductDTO>> getBottom10ProductsBySales() {
+        List<SalesStatsProductDTO> bottom10Products = salesStatsService.getBottom10ProductsBySales();
         return Result.success(bottom10Products);
     }
 
     @GetMapping("/best-selling")
     @ApiOperation(value = "获取销售量最好的商品", notes = "获取销售量最好的商品及其详细信息")
-    public Result<Products> getBestSellingProduct() {
-        Products bestSellingProduct = salesStatsService.getBestSellingProduct();
+    public Result<SalesStatsProductDTO> getBestSellingProduct() {
+        SalesStatsProductDTO  bestSellingProduct = salesStatsService.getBestSellingProduct();
         return Result.success(bestSellingProduct);
     }
 

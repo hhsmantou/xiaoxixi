@@ -97,7 +97,7 @@ public class OrdersController {
         return Result.success(orderDetails);
     }
 
-    //    @GetMapping("/status/{status}/user/{userId}/page")
+    //    @GetMapping("/status/{status}/us er/{userId}/page")
 //    @ApiOperation(value = "根据订单状态和用户ID分页获取订单列表", notes = "根据订单状态和用户ID分页获取订单列表，并携带商品详情和用户信息")
 //    public Result<IPage<OrderDetailsDTO>> getOrdersByStatusAndUserId(
 //            @PathVariable Integer status,

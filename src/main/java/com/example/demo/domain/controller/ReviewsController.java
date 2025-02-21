@@ -108,4 +108,10 @@ public class ReviewsController {
         IPage<ReviewWithUserDTO> reviewsPage = reviewsService.getReviewsWithUserByProductIdPage(reviewPage, productId);
         return Result.success(reviewsPage);
     }
+    @GetMapping("/latest")
+    @ApiOperation(value = "获取最新的十条评价及用户信息", notes = "获取最新的十条评价及用户信息")
+    public Result<List<ReviewWithUserDTO>> getLatestReviewsWithUser() {
+        List<ReviewWithUserDTO> reviews = reviewsService.getLatestReviewsWithUser();
+        return Result.success(reviews);
+    }
 }
